@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'routes/todo_routes.dart';
+// import 'routes/todo_routes.dart';
 import 'screens/main_screen.dart';
 import 'theme/app_theme.dart';
 
@@ -12,15 +12,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final routes = TodoRoutesNames.getRoutes(context);
+    //final routes = TodoRoutesNames.getRoutes(context);
     final theme = TodoTheme.light();
     final darkTheme = TodoTheme.dark();
     return MaterialApp(
       title: 'Flutter Demo',
       darkTheme: darkTheme,
       theme: theme,
-      routes: routes,
-      initialRoute: TodoRoutesNames.mainRoute,
+      home: const MainScreenProviderWidget(),
+      // routes: routes,
+      // initialRoute: TodoRoutesNames.mainRoute,
     );
   }
 }

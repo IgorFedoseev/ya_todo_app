@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import '../model/task_item.dart';
 import '../model/task_manager.dart';
 import '../provider/task_provider.dart';
-import '../routes/todo_routes.dart';
+// import '../routes/todo_routes.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_text_styles.dart';
 
@@ -28,13 +29,10 @@ class _MainScreenProviderWidgetState extends State<MainScreenProviderWidget> {
 class MainScreenWidget extends StatelessWidget {
   const MainScreenWidget({Key? key}) : super(key: key);
 
-  void _addButtonOnPressed(BuildContext context, TaskManager? manager) {
-    Navigator.of(context).pushNamed(TodoRoutesNames.taskItemRoute);
-  }
-
   @override
   Widget build(BuildContext context) {
     final manager = TaskProvider.of(context);
+    final allTasks = manager?.allTasks ?? [];
     final taskListColor = Theme.of(context).brightness == Brightness.dark
         ? DarkThemeColors.backSecondary
         : LightThemeColors.backSecondary;
@@ -47,34 +45,39 @@ class MainScreenWidget extends StatelessWidget {
       body: Padding(
         padding:
             const EdgeInsets.only(left: 8.0, right: 8.0, top: 0.0, bottom: 0.0),
-        child: SingleChildScrollView(
-          child: Container(
-            decoration: BoxDecoration(
-              color: taskListColor,
-              border: Border.all(color: taskListColor),
-              borderRadius: const BorderRadius.all(
-                Radius.circular(12),
+        child: ListView(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: taskListColor,
+                border: Border.all(color: taskListColor),
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(12),
+                ),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: allTasks.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final task = allTasks[index];
+                      return TaskTile(
+                        task: task,
+                      );
+                    },
+                  ),
+                  const NewTaskButtonTile(),
+                ],
               ),
             ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                ListView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: 24,
-                  itemBuilder: (BuildContext context, int index) {
-                    return const TaskTile();
-                  },
-                ),
-                const NewTaskButtonTile(),
-              ],
-            ),
-          ),
+          ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _addButtonOnPressed(context, manager),
+        onPressed: () => manager?.addButtonOnPressed(context),
         child: const Icon(Icons.add),
       ),
     );
@@ -82,7 +85,8 @@ class MainScreenWidget extends StatelessWidget {
 }
 
 class TaskTile extends StatelessWidget {
-  const TaskTile({Key? key}) : super(key: key);
+  final TaskItem task;
+  const TaskTile({Key? key, required this.task}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +102,7 @@ class TaskTile extends StatelessWidget {
           const SizedBox(width: 15),
           Expanded(
             child: Text(
-              'Zreddfvfdvfd sligfuhs',
+              task.title,
               style: AppTextStyles.listTextStyle,
             ),
           ),
@@ -115,6 +119,8 @@ class NewTaskButtonTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final newButtonStyle = AppTextStyles.newTaskButtonStyle(context);
+    final manager = TaskProvider.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 18.0,
@@ -126,11 +132,15 @@ class NewTaskButtonTile extends StatelessWidget {
           const Opacity(opacity: 0.0, child: Icon(Icons.square_outlined)),
           const SizedBox(width: 15),
           Expanded(
-            child: Text(
-              'Zreddfvfdvfd',
-              style: AppTextStyles.listTextStyle,
+            child: GestureDetector(
+              onTap: () => manager?.addButtonOnPressed(context),
+              child: Text(
+                'Новое',
+                style: newButtonStyle,
+              ),
             ),
           ),
+          const SizedBox(width: 100),
         ],
       ),
     );

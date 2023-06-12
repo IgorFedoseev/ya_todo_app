@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../model/task_item.dart';
 import '../model/task_item_manager.dart';
 import '../provider/task_item_provider.dart';
 import '../theme/app_colors.dart';
@@ -6,7 +7,15 @@ import '../theme/app_text_styles.dart';
 import '../theme/app_theme.dart';
 
 class TaskItemScreenProviderWidget extends StatefulWidget {
-  const TaskItemScreenProviderWidget({super.key});
+  final Function(TaskItem) onCreate;
+  final Function(TaskItem) onUpdate;
+  final TaskItem? existingTask;
+  const TaskItemScreenProviderWidget({
+    super.key,
+    required this.onCreate,
+    required this.onUpdate,
+    this.existingTask,
+  });
 
   @override
   State<TaskItemScreenProviderWidget> createState() =>
@@ -15,19 +24,39 @@ class TaskItemScreenProviderWidget extends StatefulWidget {
 
 class _TaskItemScreenProviderWidgetState
     extends State<TaskItemScreenProviderWidget> {
-  final _model = TaskItemManager();
+  late final TaskItemManager _model;
+
+  @override
+  void initState() {
+    super.initState();
+    final task = widget.existingTask;
+    final isTaskExist = task != null;
+    _model = TaskItemManager(
+      existingTask: task,
+      isUpdateing: isTaskExist,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return TaskItemProvider(
       model: _model,
-      child: const TaskItemScreenWidget(),
+      child: TaskItemScreenWidget(
+        onCreate: widget.onCreate,
+        onUpdate: widget.onUpdate,
+      ),
     );
   }
 }
 
 class TaskItemScreenWidget extends StatelessWidget {
-  const TaskItemScreenWidget({super.key});
+  final Function(TaskItem) onCreate;
+  final Function(TaskItem) onUpdate;
+  const TaskItemScreenWidget({
+    super.key,
+    required this.onCreate,
+    required this.onUpdate,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +73,18 @@ class TaskItemScreenWidget extends StatelessWidget {
           TextButton(
             onPressed: isTextFieldEmpty
                 ? null
-                : TaskItemProvider.of(context)?.onPressedSaveButton,
+                : () {
+                    final model = TaskItemProvider.getModel(context);
+                    if (model is TaskItemManager) {
+                      final task = model.createTask();
+                      final isTaskUpdated = model.isUpdateing;
+                      if (isTaskUpdated) {
+                        onUpdate(task);
+                      } else {
+                        onCreate(task);
+                      }
+                    }
+                  },
             child: Text(
               'СОХРАНИТЬ',
               style: appBarButtonStyle,
@@ -81,8 +121,24 @@ class TaskItemScreenWidget extends StatelessWidget {
   }
 }
 
-class TaskTextField extends StatelessWidget {
+class TaskTextField extends StatefulWidget {
   const TaskTextField({super.key});
+
+  @override
+  State<TaskTextField> createState() => _TaskTextFieldState();
+}
+
+class _TaskTextFieldState extends State<TaskTextField> {
+  final _controller = TextEditingController();
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final task = TaskItemProvider.of(context)?.existingTask;
+    if (task != null) {
+      _controller.text = task.title;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

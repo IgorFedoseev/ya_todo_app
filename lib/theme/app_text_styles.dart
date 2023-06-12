@@ -32,4 +32,13 @@ abstract class AppTextStyles {
         AppTextStyles.appbarAcionTextStyle.copyWith(color: appBarButtonColor);
     return appBarButtonStyle;
   }
+
+  static TextStyle newTaskButtonStyle(BuildContext context) {
+    final textButtonColor = Theme.of(context).brightness == Brightness.dark
+        ? DarkThemeColors.labelTertiary
+        : LightThemeColors.labelTertiary;
+    final appBarButtonStyle =
+        AppTextStyles.regylarBodyText.copyWith(color: textButtonColor);
+    return appBarButtonStyle;
+  }
 }
