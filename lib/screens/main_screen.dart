@@ -40,7 +40,7 @@ class MainScreenWidget extends StatelessWidget {
       appBar: AppBar(
         scrolledUnderElevation: 5.0,
         shadowColor: DarkThemeColors.backElevated,
-        title: const Text('My App'),
+        title: const Text('Мои дела'),
       ),
       body: Padding(
         padding:

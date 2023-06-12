@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../model/task_item.dart';
 import '../model/task_item_manager.dart';
 import '../provider/task_item_provider.dart';
@@ -106,7 +107,7 @@ class TaskItemScreenWidget extends StatelessWidget {
                   SizedBox(height: 28),
                   ImportanceWidget(),
                   _SeparatorWidget(),
-                  SizedBox(height: 28),
+                  SizedBox(height: 20),
                   DatePickerWidget(),
                   SizedBox(height: 40),
                 ],
@@ -228,6 +229,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('Сделать до', style: AppTextStyles.regylarBodyText),
             if (isSwitched) const DatePickerButton(),
@@ -252,13 +254,27 @@ class DatePickerButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final manager = TaskItemProvider.of(context);
+    final currentDate = DateTime.now();
+    final taskDate = manager?.taskDate ?? currentDate;
     final appBarButtonStyle = AppTextStyles.textButtonStyle(context);
     return GestureDetector(
       child: Text(
-        '21 июня 2021',
+        DateFormat.yMMMMd('ru').format(taskDate),
         style: appBarButtonStyle,
       ),
-      onTap: () {},
+      onTap: () async {
+        final selectedDate = await showDatePicker(
+          context: context,
+          locale: const Locale("ru", "RU"),
+          initialDate: currentDate,
+          firstDate: currentDate,
+          lastDate: DateTime(currentDate.year + 5),
+        );
+        if (selectedDate != null) {
+          manager?.taskDate = selectedDate;
+        }
+      },
     );
   }
 }

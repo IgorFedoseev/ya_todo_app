@@ -6,6 +6,7 @@ import 'task_item.dart';
 class TaskItemManager extends ChangeNotifier {
   TaskItemManager({required this.existingTask, required this.isUpdateing});
   String? _taskTitle;
+  DateTime? _taskDate;
   final TaskItem? existingTask;
   final bool isUpdateing;
 
@@ -15,6 +16,13 @@ class TaskItemManager extends ChangeNotifier {
   }
 
   String get taskTitle => _taskTitle ?? '';
+
+  set taskDate(DateTime? taskDate) {
+    _taskDate = taskDate;
+    notifyListeners();
+  }
+
+  DateTime? get taskDate => _taskDate;
 
   // Function? get onPressedDeleteButton {
   //   final taskText = _taskTitle;
@@ -30,7 +38,11 @@ class TaskItemManager extends ChangeNotifier {
   }
 
   TaskItem createTask() {
-    final task = TaskItem(id: const Uuid().v1(), title: _taskTitle ?? '_');
+    final task = TaskItem(
+      id: const Uuid().v1(),
+      title: _taskTitle ?? '_',
+      date: _taskDate,
+    );
     print(task.id);
     return task;
   }

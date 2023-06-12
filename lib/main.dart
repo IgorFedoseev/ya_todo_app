@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 // import 'routes/todo_routes.dart';
 import 'screens/main_screen.dart';
 import 'theme/app_theme.dart';
@@ -16,6 +17,8 @@ class MyApp extends StatelessWidget {
     final theme = TodoTheme.light();
     final darkTheme = TodoTheme.dark();
     return MaterialApp(
+      localizationsDelegates: const [GlobalMaterialLocalizations.delegate],
+      supportedLocales: const [Locale('en'), Locale('ru')],
       title: 'Flutter Demo',
       darkTheme: darkTheme,
       theme: theme,
