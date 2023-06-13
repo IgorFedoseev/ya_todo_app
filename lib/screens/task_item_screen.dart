@@ -4,8 +4,8 @@ import '../model/task_item.dart';
 import '../model/task_item_manager.dart';
 import '../provider/task_item_provider.dart';
 import '../theme/app_colors.dart';
+import '../theme/app_elements_color.dart';
 import '../theme/app_text_styles.dart';
-import '../theme/app_theme.dart';
 
 class TaskItemScreenProviderWidget extends StatefulWidget {
   final Function(TaskItem) onCreate;
@@ -135,10 +135,18 @@ class _TaskTextFieldState extends State<TaskTextField> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final task = TaskItemProvider.of(context)?.existingTask;
+    final manager = TaskItemProvider.getModel(context);
+    final task = manager?.existingTask;
+    print(task?.title);
     if (task != null) {
       _controller.text = task.title;
     }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -150,6 +158,7 @@ class _TaskTextFieldState extends State<TaskTextField> {
       elevation: 3.0,
       borderRadius: BorderRadius.circular(12),
       child: TextField(
+        controller: _controller,
         onChanged: (text) =>
             TaskItemProvider.getModel(context)?.taskTitle = text,
         autofocus: true,
@@ -300,7 +309,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final activeSwitchColor = TodoTheme.getSwitchColor(context);
+    final activeSwitchColor = TodoElementsColor.getBlueColor(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -315,6 +324,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
           activeColor: activeSwitchColor,
           value: isSwitched,
           onChanged: (isOn) {
+            if (!isOn) TaskItemProvider.getModel(context)?.taskDate = null;
             setState(() {
               isSwitched = isOn;
             });
@@ -343,7 +353,7 @@ class DatePickerButton extends StatelessWidget {
         final selectedDate = await showDatePicker(
           context: context,
           locale: const Locale("ru", "RU"),
-          initialDate: currentDate,
+          initialDate: manager?.taskDate ?? currentDate,
           firstDate: currentDate,
           lastDate: DateTime(currentDate.year + 5),
         );
@@ -372,7 +382,7 @@ class DeleteButtonWidget extends StatelessWidget {
     final manager = TaskItemProvider.of(context);
     final taskTitle = manager?.taskTitle;
     final isTextFieldEmpty = taskTitle?.trim().isEmpty ?? true;
-    final deleteButtonColor = TodoTheme.getDeleteButtonColor(context);
+    final deleteButtonColor = TodoElementsColor.getRedColor(context);
     return Padding(
       padding: const EdgeInsets.only(left: 6, right: 200),
       child: TextButton(

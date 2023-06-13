@@ -4,7 +4,12 @@ import 'package:uuid/uuid.dart';
 import 'task_item.dart';
 
 class TaskItemManager extends ChangeNotifier {
-  TaskItemManager({required this.existingTask, required this.isUpdateing});
+  TaskItemManager({required this.existingTask, required this.isUpdateing}) {
+    _taskTitle = existingTask?.title;
+    _taskDate = existingTask?.date;
+    _taskImportance = existingTask?.importance;
+    setTaskImportanceText();
+  }
   String? _taskTitle;
   DateTime? _taskDate;
   Importance? _taskImportance;
@@ -61,7 +66,7 @@ class TaskItemManager extends ChangeNotifier {
 
   TaskItem createTask() {
     final task = TaskItem(
-        id: const Uuid().v1(),
+        id: existingTask?.id ?? const Uuid().v1(),
         title: _taskTitle ?? '_',
         date: _taskDate,
         importance: _taskImportance,

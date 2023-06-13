@@ -41,13 +41,14 @@ class TaskManager extends ChangeNotifier {
     notifyListeners();
   }
 
-  // void updateTask(TaskItem task, int index){
-  //   _allTasksList[index] = task;
-  //   notifyListeners();
-  // }
+  void updateTask(TaskItem task, int index) {
+    _allTasksList[index] = task;
+    notifyListeners();
+  }
 
-  void removeTask(int index) {
+  bool removeTask(int index) {
     _allTasksList.removeAt(index);
     notifyListeners();
+    return true;
   }
 }

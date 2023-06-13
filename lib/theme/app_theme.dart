@@ -36,18 +36,4 @@ abstract class TodoTheme {
       scaffoldBackgroundColor: DarkThemeColors.backPrimary,
     );
   }
-
-  static Color getSwitchColor(BuildContext context) {
-    final activeSwitchColor = Theme.of(context).brightness == Brightness.dark
-        ? DarkThemeColors.colorBlue
-        : LightThemeColors.colorBlue;
-    return activeSwitchColor;
-  }
-
-  static Color getDeleteButtonColor(BuildContext context) {
-    final activeSwitchColor = Theme.of(context).brightness == Brightness.dark
-        ? DarkThemeColors.colorRed
-        : LightThemeColors.colorRed;
-    return activeSwitchColor;
-  }
 }

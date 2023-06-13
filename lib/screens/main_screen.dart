@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import '../model/task_item.dart';
+import 'package:ya_todo_list/screens/main_screen_componentes/deleting_background_widget.dart';
 import '../model/task_manager.dart';
 import '../provider/task_provider.dart';
-// import '../routes/todo_routes.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_text_styles.dart';
+import 'main_screen_componentes/completing_background_widget.dart';
+import 'task_item_screen.dart';
 
 class MainScreenProviderWidget extends StatefulWidget {
   const MainScreenProviderWidget({super.key});
@@ -63,9 +64,8 @@ class MainScreenWidget extends StatelessWidget {
                     shrinkWrap: true,
                     itemCount: allTasks.length,
                     itemBuilder: (BuildContext context, int index) {
-                      final task = allTasks[index];
                       return TaskTile(
-                        task: task,
+                        index: index,
                       );
                     },
                   ),
@@ -85,30 +85,58 @@ class MainScreenWidget extends StatelessWidget {
 }
 
 class TaskTile extends StatelessWidget {
-  final TaskItem task;
-  const TaskTile({Key? key, required this.task}) : super(key: key);
+  final int index;
+  const TaskTile({Key? key, required this.index}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 18.0,
-        vertical: 14.0,
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Icon(Icons.square_outlined),
-          const SizedBox(width: 15),
-          Expanded(
-            child: Text(
-              task.title,
-              style: AppTextStyles.listTextStyle,
+    final manager = TaskProvider.of(context);
+    final allTasks = manager?.allTasks ?? [];
+    final task = allTasks[index];
+    return Dismissible(
+      key: Key(task.id),
+      background: const CompletingBackgroundWidget(),
+      secondaryBackground: const DeletingBackgroundWidget(),
+      confirmDismiss: (direction) async {
+        if (direction == DismissDirection.endToStart) {
+          manager?.removeTask(index);
+        } else {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => TaskItemScreenProviderWidget(
+                onUpdate: (item) {
+                  manager?.updateTask(item, index);
+                  Navigator.pop(context);
+                },
+                onCreate: (item) {},
+                existingTask: task,
+              ),
             ),
-          ),
-          const SizedBox(width: 14),
-          const Icon(Icons.info_outline),
-        ],
+          );
+        }
+        return false;
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 18.0,
+          vertical: 14.0,
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Icon(Icons.square_outlined),
+            const SizedBox(width: 15),
+            Expanded(
+              child: Text(
+                task.title,
+                style: AppTextStyles.listTextStyle,
+              ),
+            ),
+            const SizedBox(width: 14),
+            const Icon(Icons.info_outline),
+          ],
+        ),
       ),
     );
   }
