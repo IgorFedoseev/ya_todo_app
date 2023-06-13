@@ -7,6 +7,8 @@ class TaskItemManager extends ChangeNotifier {
   TaskItemManager({required this.existingTask, required this.isUpdateing});
   String? _taskTitle;
   DateTime? _taskDate;
+  Importance? _taskImportance;
+  String _taskImportanceText = 'Нет';
   final TaskItem? existingTask;
   final bool isUpdateing;
 
@@ -24,6 +26,30 @@ class TaskItemManager extends ChangeNotifier {
 
   DateTime? get taskDate => _taskDate;
 
+  set taskImportance(Importance? importance) {
+    _taskImportance = importance;
+    setTaskImportanceText();
+    notifyListeners();
+  }
+
+  Importance? get taskImportance => _taskImportance;
+
+  get taskImportanceText => _taskImportanceText;
+
+  void setTaskImportanceText() {
+    final importance = _taskImportance;
+    switch (importance) {
+      case Importance.high:
+        _taskImportanceText = '!! Высокий';
+        break;
+      case Importance.low:
+        _taskImportanceText = 'Низкий';
+        break;
+      default:
+        _taskImportanceText = 'Нет';
+    }
+  }
+
   // Function? get onPressedDeleteButton {
   //   final taskText = _taskTitle;
   //   if (taskText != null && taskText.trim().isNotEmpty) {
@@ -33,17 +59,13 @@ class TaskItemManager extends ChangeNotifier {
   //   }
   // }
 
-  void onPressedDeleteButton() {
-    print(_taskTitle);
-  }
-
   TaskItem createTask() {
     final task = TaskItem(
-      id: const Uuid().v1(),
-      title: _taskTitle ?? '_',
-      date: _taskDate,
-    );
-    print(task.id);
+        id: const Uuid().v1(),
+        title: _taskTitle ?? '_',
+        date: _taskDate,
+        importance: _taskImportance,
+        isDone: existingTask?.isDone ?? false);
     return task;
   }
 }

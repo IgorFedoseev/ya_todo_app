@@ -191,22 +191,89 @@ class ImportanceWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final smallTextColor = Theme.of(context).brightness == Brightness.dark
-        ? DarkThemeColors.labelTertiary
-        : LightThemeColors.labelTertiary;
-    final smallTextStyle =
-        AppTextStyles.smallBodyText.copyWith(color: smallTextColor);
+    final manager = TaskItemProvider.of(context);
+    final isHighImportance = manager?.taskImportance == Importance.high;
+    final importanceText =
+        TaskItemProvider.of(context)?.taskImportanceText ?? 'Нет';
+    final smallTextStyle = isHighImportance
+        ? AppTextStyles.highValueStyle(context)
+        : AppTextStyles.lowValueStyle(context);
     return GestureDetector(
-      onTap: () {},
+      onTap: () => showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(0.0)),
+              insetPadding:
+                  const EdgeInsets.only(bottom: 180, right: 180, left: 16),
+              child: SizedBox(
+                height: 160,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ImportanceDialogOption(
+                      label: 'Нет',
+                      chooseImportance: () {
+                        manager?.taskImportance = null;
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    ImportanceDialogOption(
+                      label: 'Низкий',
+                      chooseImportance: () {
+                        manager?.taskImportance = Importance.low;
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    ImportanceDialogOption(
+                      label: 'Высокий',
+                      chooseImportance: () {
+                        manager?.taskImportance = Importance.high;
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text('Важность', style: AppTextStyles.regylarBodyText),
           const SizedBox(height: 4.0),
-          Text('Нет', style: smallTextStyle),
+          Text(importanceText, style: smallTextStyle),
           const SizedBox(height: 16.0),
         ],
+      ),
+    );
+  }
+}
+
+class ImportanceDialogOption extends StatelessWidget {
+  final String label;
+  final Function chooseImportance;
+  const ImportanceDialogOption(
+      {super.key, required this.chooseImportance, required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () => chooseImportance(),
+      child: SizedBox(
+        height: 48,
+        child: Align(
+            alignment: Alignment.centerLeft,
+            child: Row(
+              children: [
+                const SizedBox(width: 12),
+                Expanded(
+                    child: Text(label, style: AppTextStyles.regylarBodyText)),
+              ],
+            )),
       ),
     );
   }
@@ -221,6 +288,15 @@ class DatePickerWidget extends StatefulWidget {
 
 class _DatePickerWidgetState extends State<DatePickerWidget> {
   bool isSwitched = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final isDateSelected = TaskItemProvider.of(context)?.taskDate != null;
+    if (isDateSelected) {
+      isSwitched = true;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -282,17 +358,25 @@ class DatePickerButton extends StatelessWidget {
 class DeleteButtonWidget extends StatelessWidget {
   const DeleteButtonWidget({super.key});
 
+  void _onPressed(BuildContext context, TaskItemManager? manager) {
+    final isTaskExist = manager?.existingTask != null;
+    if (isTaskExist) {
+      () {};
+    } else {
+      Navigator.of(context).pop();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final taskTitle = TaskItemProvider.of(context)?.taskTitle;
+    final manager = TaskItemProvider.of(context);
+    final taskTitle = manager?.taskTitle;
     final isTextFieldEmpty = taskTitle?.trim().isEmpty ?? true;
     final deleteButtonColor = TodoTheme.getDeleteButtonColor(context);
     return Padding(
       padding: const EdgeInsets.only(left: 6, right: 200),
       child: TextButton(
-        onPressed: isTextFieldEmpty
-            ? null
-            : TaskItemProvider.of(context)?.onPressedDeleteButton,
+        onPressed: isTextFieldEmpty ? null : () => _onPressed(context, manager),
         style: TextButton.styleFrom(
           foregroundColor: deleteButtonColor,
         ),

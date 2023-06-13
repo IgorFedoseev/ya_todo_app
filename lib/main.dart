@@ -17,8 +17,11 @@ class MyApp extends StatelessWidget {
     final theme = TodoTheme.light();
     final darkTheme = TodoTheme.dark();
     return MaterialApp(
-      localizationsDelegates: const [GlobalMaterialLocalizations.delegate],
-      supportedLocales: const [Locale('en'), Locale('ru')],
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [Locale('en', 'US'), Locale('ru', 'RU')],
       title: 'Flutter Demo',
       darkTheme: darkTheme,
       theme: theme,
