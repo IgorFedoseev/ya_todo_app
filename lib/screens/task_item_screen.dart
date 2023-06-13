@@ -10,11 +10,13 @@ import '../theme/app_text_styles.dart';
 class TaskItemScreenProviderWidget extends StatefulWidget {
   final Function(TaskItem) onCreate;
   final Function(TaskItem) onUpdate;
+  final Function onDelete;
   final TaskItem? existingTask;
   const TaskItemScreenProviderWidget({
     super.key,
     required this.onCreate,
     required this.onUpdate,
+    required this.onDelete,
     this.existingTask,
   });
 
@@ -45,6 +47,7 @@ class _TaskItemScreenProviderWidgetState
       child: TaskItemScreenWidget(
         onCreate: widget.onCreate,
         onUpdate: widget.onUpdate,
+        onDelete: widget.onDelete,
       ),
     );
   }
@@ -53,15 +56,18 @@ class _TaskItemScreenProviderWidgetState
 class TaskItemScreenWidget extends StatelessWidget {
   final Function(TaskItem) onCreate;
   final Function(TaskItem) onUpdate;
+  final Function onDelete;
   const TaskItemScreenWidget({
     super.key,
     required this.onCreate,
     required this.onUpdate,
+    required this.onDelete,
   });
 
   @override
   Widget build(BuildContext context) {
-    final taskTitle = TaskItemProvider.of(context)?.taskTitle;
+    final manager = TaskItemProvider.of(context);
+    final taskTitle = manager?.taskTitle;
     final isTextFieldEmpty = taskTitle?.trim().isEmpty ?? true;
     final appBarButtonStyle = AppTextStyles.textButtonStyle(context);
     return Scaffold(
@@ -75,10 +81,9 @@ class TaskItemScreenWidget extends StatelessWidget {
             onPressed: isTextFieldEmpty
                 ? null
                 : () {
-                    final model = TaskItemProvider.getModel(context);
-                    if (model is TaskItemManager) {
-                      final task = model.createTask();
-                      final isTaskUpdated = model.isUpdateing;
+                    if (manager is TaskItemManager) {
+                      final task = manager.createTask();
+                      final isTaskUpdated = manager.isUpdateing;
                       if (isTaskUpdated) {
                         onUpdate(task);
                       } else {
@@ -114,7 +119,7 @@ class TaskItemScreenWidget extends StatelessWidget {
               ),
             ),
             const _SeparatorWidget(),
-            const DeleteButtonWidget(),
+            DeleteButtonWidget(onDelete: onDelete),
           ],
         ),
       ),
@@ -137,7 +142,6 @@ class _TaskTextFieldState extends State<TaskTextField> {
     super.didChangeDependencies();
     final manager = TaskItemProvider.getModel(context);
     final task = manager?.existingTask;
-    print(task?.title);
     if (task != null) {
       _controller.text = task.title;
     }
@@ -366,16 +370,8 @@ class DatePickerButton extends StatelessWidget {
 }
 
 class DeleteButtonWidget extends StatelessWidget {
-  const DeleteButtonWidget({super.key});
-
-  void _onPressed(BuildContext context, TaskItemManager? manager) {
-    final isTaskExist = manager?.existingTask != null;
-    if (isTaskExist) {
-      () {};
-    } else {
-      Navigator.of(context).pop();
-    }
-  }
+  final Function onDelete;
+  const DeleteButtonWidget({super.key, required this.onDelete});
 
   @override
   Widget build(BuildContext context) {
@@ -386,7 +382,7 @@ class DeleteButtonWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(left: 6, right: 200),
       child: TextButton(
-        onPressed: isTextFieldEmpty ? null : () => _onPressed(context, manager),
+        onPressed: isTextFieldEmpty ? null : () => onDelete(),
         style: TextButton.styleFrom(
           foregroundColor: deleteButtonColor,
         ),

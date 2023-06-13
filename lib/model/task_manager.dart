@@ -16,6 +16,7 @@ class TaskManager extends ChangeNotifier {
             Navigator.pop(context);
           },
           onUpdate: (item) {},
+          onDelete: () => Navigator.pop(context),
         ),
       ),
     );
@@ -28,16 +29,16 @@ class TaskManager extends ChangeNotifier {
     return List.unmodifiable(outstandingTasksList);
   }
 
-  void addTask(TaskItem task) {
-    _allTasksList.add(task);
+  void onTaskComplete(int index) {
+    final task = _allTasksList[index];
+    final isDoneChanged = !task.isDone;
+    final completedTask = task.copyWith(isDone: isDoneChanged);
+    _allTasksList[index] = completedTask;
     notifyListeners();
   }
 
-  void completeTask(int index) {
-    // when you swipe to the right, the value of isDone changes to the opposite
-    final task = _allTasksList[index];
-    final isDoneChanged = !task.isDone;
-    _allTasksList[index] = task.copyWith(isDone: isDoneChanged);
+  void addTask(TaskItem task) {
+    _allTasksList.add(task);
     notifyListeners();
   }
 

@@ -29,4 +29,25 @@ abstract class TodoElementsColor {
         : LightThemeColors.colorWhite;
     return whiteColor;
   }
+
+  static Color getGreyColor(BuildContext context) {
+    final greyColor = Theme.of(context).brightness == Brightness.dark
+        ? DarkThemeColors.colorGray
+        : LightThemeColors.colorGray;
+    return greyColor;
+  }
+
+  static Color getTertiaryColor(BuildContext context) {
+    final color = Theme.of(context).brightness == Brightness.dark
+        ? DarkThemeColors.labelTertiary
+        : LightThemeColors.labelTertiary;
+    return color;
+  }
+
+  static Color getSeparatorColor(BuildContext context) {
+    final color = Theme.of(context).brightness == Brightness.dark
+        ? DarkThemeColors.supportSeparator
+        : LightThemeColors.supportSeparator;
+    return color;
+  }
 }
