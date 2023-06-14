@@ -50,4 +50,26 @@ abstract class TodoElementsColor {
         : LightThemeColors.supportSeparator;
     return color;
   }
+
+  static Color getBackSecondaryColor(BuildContext context) {
+    final redColor = Theme.of(context).brightness == Brightness.dark
+        ? DarkThemeColors.backSecondary
+        : LightThemeColors.backSecondary;
+    return redColor;
+  }
+
+  static ColorScheme getDatePickerScheme(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    const darkScheme = ColorScheme.dark(primary: DarkThemeColors.colorBlue);
+    const liteScheme = ColorScheme.light(primary: LightThemeColors.colorBlue);
+    final colorScheme = isDark ? darkScheme : liteScheme;
+    return colorScheme;
+  }
+
+  static Color getCustomImpotanceColor(BuildContext context) {
+    final color = Theme.of(context).brightness == Brightness.dark
+        ? DarkThemeColors.customHighImportance
+        : LightThemeColors.customHighImportance;
+    return color;
+  }
 }

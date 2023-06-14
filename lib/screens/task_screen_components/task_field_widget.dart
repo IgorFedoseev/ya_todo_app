@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../provider/task_item_provider.dart';
 import '../../theme/app_colors.dart';
+import '../../theme/app_elements_color.dart';
 import '../../theme/app_text_styles.dart';
 
 class TaskTextField extends StatefulWidget {
@@ -32,9 +33,9 @@ class _TaskTextFieldState extends State<TaskTextField> {
 
   @override
   Widget build(BuildContext context) {
-    final textFieldColor = Theme.of(context).brightness == Brightness.dark
-        ? DarkThemeColors.backSecondary
-        : LightThemeColors.backSecondary;
+    final textFieldColor = TodoElementsColor.getBackSecondaryColor(context);
+    final hintStyle = AppTextStyles.regylarBodyText
+        .copyWith(color: TodoElementsColor.getTertiaryColor(context));
     return Material(
       elevation: 3.0,
       borderRadius: BorderRadius.circular(12),
@@ -52,7 +53,7 @@ class _TaskTextFieldState extends State<TaskTextField> {
           fillColor: textFieldColor,
           filled: true,
           hintText: 'Что надо сделать…',
-          hintStyle: AppTextStyles.regylarBodyText,
+          hintStyle: hintStyle,
         ),
         minLines: 3,
         maxLines: 100,

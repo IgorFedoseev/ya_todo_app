@@ -43,7 +43,7 @@ class MyPainter extends CustomPainter {
     );
 
     final paintRect = Paint()
-      ..color = const Color.fromRGBO(250, 225, 223, 1.0)
+      ..color = TodoElementsColor.getCustomImpotanceColor(context)
       ..style = PaintingStyle.fill;
     canvas.drawRect(rect, paintRect);
 

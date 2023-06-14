@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../provider/task_item_provider.dart';
+import '../../theme/app_elements_color.dart';
 import '../../theme/app_elements_text_styles.dart';
 
 class DatePickerButton extends StatelessWidget {
@@ -25,6 +26,14 @@ class DatePickerButton extends StatelessWidget {
           initialDate: manager?.taskDate ?? currentDate,
           firstDate: currentDate,
           lastDate: DateTime(currentDate.year + 5),
+          builder: (context, child) {
+            return Theme(
+              data: Theme.of(context).copyWith(
+                colorScheme: TodoElementsColor.getDatePickerScheme(context),
+              ),
+              child: child!,
+            );
+          },
         );
         if (selectedDate != null) {
           manager?.taskDate = selectedDate;

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ya_todo_list/theme/app_elements_color.dart';
 import '../provider/task_provider.dart';
 import '../provider_widgets/task_item_provider_widget.dart';
 import '../theme/app_colors.dart';
@@ -12,9 +13,7 @@ class MainScreenWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final manager = TaskProvider.of(context);
     final allTasks = manager?.allTasks ?? [];
-    final taskListColor = Theme.of(context).brightness == Brightness.dark
-        ? DarkThemeColors.backSecondary
-        : LightThemeColors.backSecondary;
+    final taskListColor = TodoElementsColor.getBackSecondaryColor(context);
     return Scaffold(
       appBar: AppBar(
         scrolledUnderElevation: 5.0,

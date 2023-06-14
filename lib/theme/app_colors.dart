@@ -16,6 +16,7 @@ abstract class LightThemeColors {
   static const backPrimary = Color(0xFFF7F6F2);
   static const backSecondary = Color(0xFFFFFFFF);
   static const backElevated = Color(0xFFFFFFFF);
+  static const customHighImportance = Color.fromRGBO(250, 225, 223, 1.0);
 }
 
 abstract class DarkThemeColors {
@@ -34,4 +35,5 @@ abstract class DarkThemeColors {
   static const backPrimary = Color(0xFF161618);
   static const backSecondary = Color(0xFF252528);
   static const backElevated = Color(0xFF3C3C3F);
+  static const customHighImportance = Color.fromRGBO(68, 43, 43, 1.0);
 }
