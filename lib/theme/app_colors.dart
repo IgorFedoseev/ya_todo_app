@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-abstract class LightThemeColors{
+abstract class LightThemeColors {
   static const supportSeparator = Color(0x33000000);
   static const supportOverlay = Color(0x0F000000);
   static const labelPrimary = Color(0xFF000000);
@@ -18,7 +18,7 @@ abstract class LightThemeColors{
   static const backElevated = Color(0xFFFFFFFF);
 }
 
-abstract class DarkThemeColors{
+abstract class DarkThemeColors {
   static const supportSeparator = Color(0x33FFFFFF);
   static const supportOverlay = Color(0x52000000);
   static const labelPrimary = Color(0xFFFFFFFF);

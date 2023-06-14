@@ -1,3 +1,5 @@
+enum Importance { low, high }
+
 class TaskItem {
   final String id;
   final String title;
@@ -29,5 +31,3 @@ class TaskItem {
     );
   }
 }
-
-enum Importance { low, high }

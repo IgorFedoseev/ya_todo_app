@@ -1,26 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ya_todo_list/model/task_item.dart';
 
-import '../screens/task_item_screen.dart';
-
 class TaskManager extends ChangeNotifier {
   final _allTasksList = <TaskItem>[];
-
-  void addButtonOnPressed(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => TaskItemScreenProviderWidget(
-          onCreate: (item) {
-            addTask(item);
-            Navigator.pop(context);
-          },
-          onUpdate: (item) {},
-          onDelete: () => Navigator.pop(context),
-        ),
-      ),
-    );
-  }
 
   List<TaskItem> get allTasks => List.unmodifiable(_allTasksList);
   List<TaskItem> get outstandingTasks {

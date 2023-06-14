@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-// import 'routes/todo_routes.dart';
-import 'screens/main_screen.dart';
+import 'localizations/localizations.dart';
+import 'provider_widgets/main_screen_provider_widget.dart';
 import 'theme/app_theme.dart';
 
 void main() {
@@ -13,21 +12,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //final routes = TodoRoutesNames.getRoutes(context);
     final theme = TodoTheme.light();
     final darkTheme = TodoTheme.dark();
     return MaterialApp(
-      localizationsDelegates: const [
-        GlobalMaterialLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [Locale('en', 'US'), Locale('ru', 'RU')],
+      localizationsDelegates: TodoLocalization.localizationsDelegates,
+      supportedLocales: TodoLocalization.locales,
       title: 'Flutter Demo',
       darkTheme: darkTheme,
       theme: theme,
       home: const MainScreenProviderWidget(),
-      // routes: routes,
-      // initialRoute: TodoRoutesNames.mainRoute,
     );
   }
 }

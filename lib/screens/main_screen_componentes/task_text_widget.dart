@@ -7,24 +7,10 @@ class TaskTextWidget extends StatelessWidget {
   final TaskItem task;
   const TaskTextWidget({super.key, required this.task});
 
-  Widget getImportanceMark(BuildContext context) {
-    final isUrgent = task.importance == Importance.high;
-    final redColor = TodoElementsColor.getRedColor(context);
-    if (isUrgent) {
-      return Text(' !! ',
-          style: AppTextStyles.listTextStyle.copyWith(
-              color: redColor, fontWeight: FontWeight.w900, fontSize: 22));
-    } else {
-      return Icon(
-        Icons.arrow_downward,
-        color: TodoElementsColor.getGreyColor(context),
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final isTaskCompleted = task.isDone;
+    final isDateSetted = task.date != null;
     final completedTextColor = TodoElementsColor.getTertiaryColor(context);
     final textRegularStyle = AppTextStyles.listTextStyle;
     final textCompletedStyle = AppTextStyles.listTextStyle.copyWith(
@@ -34,14 +20,15 @@ class TaskTextWidget extends StatelessWidget {
     );
     final textStyle = isTaskCompleted ? textCompletedStyle : textRegularStyle;
     final taskTitle = task.title;
+    final dateTextStyle =
+        AppTextStyles.regylarBodyText.copyWith(color: completedTextColor);
     return Expanded(
-      child: Row(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          if (!isTaskCompleted && task.importance != null)
-            getImportanceMark(context),
-          Expanded(child: Text(taskTitle, style: textStyle)),
+          Text(taskTitle, style: textStyle),
+          if (isDateSetted && !isTaskCompleted)
+            Text('дата', style: dateTextStyle),
         ],
       ),
     );

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
-
 import 'task_item.dart';
 
 class TaskItemManager extends ChangeNotifier {
@@ -54,15 +53,6 @@ class TaskItemManager extends ChangeNotifier {
         _taskImportanceText = 'Нет';
     }
   }
-
-  // Function? get onPressedDeleteButton {
-  //   final taskText = _taskTitle;
-  //   if (taskText != null && taskText.trim().isNotEmpty) {
-  //     return _onPressedDeleteButton;
-  //   } else {
-  //     return null;
-  //   }
-  // }
 
   TaskItem createTask() {
     final task = TaskItem(
