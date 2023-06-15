@@ -27,6 +27,17 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
     }
   }
 
+  void onChangedSwitch(bool isOn) {
+    if (!isOn) {
+      manager?.taskDate = null;
+    } else if (isOn && manager?.taskDate == null) {
+      manager?.taskDate = DateTime.now();
+    }
+    setState(() {
+      isSwitched = isOn;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final activeSwitchColor = TodoElementsColor.getBlueColor(context);
@@ -43,12 +54,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
         Switch(
           activeColor: activeSwitchColor,
           value: isSwitched,
-          onChanged: (isOn) {
-            if (!isOn) manager?.taskDate = null;
-            setState(() {
-              isSwitched = isOn;
-            });
-          },
+          onChanged: onChangedSwitch,
         ),
       ],
     );
