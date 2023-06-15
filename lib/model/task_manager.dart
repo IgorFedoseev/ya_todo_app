@@ -7,6 +7,16 @@ class TaskManager extends ChangeNotifier {
 
   bool get isVisibleCompleted => _isVisibleCompleted;
 
+  int get completedTasksNumber {
+    int counter = 0;
+    for (var i = 0; i < _allTasksList.length; i++) {
+      if (_allTasksList[i].isDone == true) {
+        counter++;
+      }
+    }
+    return counter;
+  }
+
   List<TaskItem> get allTasks {
     if (_isVisibleCompleted) {
       return List.unmodifiable(_allTasksList);

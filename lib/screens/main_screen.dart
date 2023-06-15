@@ -3,6 +3,7 @@ import 'package:ya_todo_list/theme/app_elements_color.dart';
 import 'package:ya_todo_list/theme/app_text_styles.dart';
 import '../provider/task_provider.dart';
 import '../provider_widgets/task_item_provider_widget.dart';
+import 'main_screen_componentes/completed_number_widget.dart';
 import 'main_screen_componentes/new_task_tile_widget.dart';
 import 'main_screen_componentes/task_tile_widget.dart';
 
@@ -25,13 +26,12 @@ class MainScreenWidget extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            expandedHeight: 164,
+            expandedHeight: 128,
             backgroundColor: TodoElementsColor.getBackPrimaryColor(context),
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
               title: Text('Мои дела', style: appBarTitleStyle),
             ),
-            centerTitle: false,
             actions: [
               IconButton(
                 onPressed: manager?.onVisible,
@@ -56,34 +56,39 @@ class MainScreenWidget extends StatelessWidget {
             // ),
           ),
           SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 40.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: taskListColor,
-                  border: Border.all(color: taskListColor),
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(12),
+            child: Column(
+              children: [
+                const CompletedNumberWidget(),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 40.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: taskListColor,
+                      border: Border.all(color: taskListColor),
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(12),
+                      ),
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          padding: EdgeInsets.zero,
+                          shrinkWrap: true,
+                          itemCount: allTasks.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return TaskTile(
+                              index: index,
+                            );
+                          },
+                        ),
+                        const NewTaskButtonTile(),
+                      ],
+                    ),
                   ),
                 ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      padding: EdgeInsets.zero,
-                      shrinkWrap: true,
-                      itemCount: allTasks.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return TaskTile(
-                          index: index,
-                        );
-                      },
-                    ),
-                    const NewTaskButtonTile(),
-                  ],
-                ),
-              ),
+              ],
             ),
           ),
         ],
