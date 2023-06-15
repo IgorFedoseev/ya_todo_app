@@ -65,6 +65,13 @@ abstract class TodoElementsColor {
     return color;
   }
 
+  static Color getLabelPrimaryColor(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final color =
+        isDark ? DarkThemeColors.labelPrimary : LightThemeColors.labelPrimary;
+    return color;
+  }
+
   static ColorScheme getDatePickerScheme(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     const darkScheme = ColorScheme.dark(primary: DarkThemeColors.colorBlue);

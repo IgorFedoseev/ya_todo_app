@@ -13,6 +13,9 @@ class MainScreenWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final manager = TaskProvider.of(context);
     final allTasks = manager?.allTasks ?? [];
+    final appBatTitleColor = TodoElementsColor.getLabelPrimaryColor(context);
+    final appBarTitleStyle =
+        AppTextStyles.appBarTextStyle.copyWith(color: appBatTitleColor);
     final taskListColor = TodoElementsColor.getBackSecondaryColor(context);
     final iconColor = TodoElementsColor.getBlueColor(context);
     final isVisibleCompleted = manager?.isVisibleCompleted ?? true;
@@ -26,10 +29,7 @@ class MainScreenWidget extends StatelessWidget {
             backgroundColor: TodoElementsColor.getBackPrimaryColor(context),
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
-              title: Text(
-                'Мои дела',
-                style: AppTextStyles.appBarTextStyle,
-              ),
+              title: Text('Мои дела', style: appBarTitleStyle),
             ),
             centerTitle: false,
             actions: [
