@@ -26,7 +26,7 @@ class MainScreenWidget extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            expandedHeight: 128,
+            expandedHeight: 120,
             backgroundColor: TodoElementsColor.getBackPrimaryColor(context),
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
@@ -57,6 +57,7 @@ class MainScreenWidget extends StatelessWidget {
           ),
           SliverToBoxAdapter(
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 const CompletedNumberWidget(),
                 Padding(

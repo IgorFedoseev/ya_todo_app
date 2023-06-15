@@ -10,7 +10,7 @@ class CompletedNumberWidget extends StatelessWidget {
     final completedNumber = TaskProvider.of(context)?.completedTasksNumber ?? 0;
     final newButtonStyle = AppElementsTextStyles.newTaskButtonStyle(context);
     return Padding(
-      padding: const EdgeInsets.fromLTRB(26.0, 0.0, 0.0, 20.0),
+      padding: const EdgeInsets.fromLTRB(26.0, 0.0, 0.0, 18.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
