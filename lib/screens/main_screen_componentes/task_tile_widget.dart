@@ -25,9 +25,9 @@ class TaskTile extends StatelessWidget {
       secondaryBackground: const DeletingBackgroundWidget(),
       confirmDismiss: (direction) async {
         if (direction == DismissDirection.endToStart) {
-          manager?.removeTask(index);
+          manager?.removeTask(task);
         } else {
-          manager?.onTaskComplete(index);
+          manager?.onTaskComplete(task);
         }
         return false;
       },
@@ -38,12 +38,12 @@ class TaskTile extends StatelessWidget {
             MaterialPageRoute(
               builder: (context) => TaskItemScreenProviderWidget(
                 onUpdate: (item) {
-                  manager?.updateTask(item, index);
+                  manager?.updateTask(item);
                   Navigator.pop(context);
                 },
                 onCreate: (item) {},
                 onDelete: () {
-                  manager?.removeTask(index);
+                  manager?.removeTask(task);
                   Navigator.pop(context);
                 },
                 existingTask: task,

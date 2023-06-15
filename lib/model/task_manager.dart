@@ -6,23 +6,19 @@ class TaskManager extends ChangeNotifier {
   bool _isVisibleCompleted = true;
 
   bool get isVisibleCompleted => _isVisibleCompleted;
-  List<TaskItem> get allTasks => List.unmodifiable(_allTasksList);
-  List<TaskItem> get outstandingTasks {
-    final outstandingTasksList =
-        _allTasksList.where((task) => task.isDone == false).toList();
-    return List.unmodifiable(outstandingTasksList);
+
+  List<TaskItem> get allTasks {
+    if (_isVisibleCompleted) {
+      return List.unmodifiable(_allTasksList);
+    } else {
+      final outstandingTasksList =
+          _allTasksList.where((task) => task.isDone == false).toList();
+      return List.unmodifiable(outstandingTasksList);
+    }
   }
 
   void onVisible() {
     _isVisibleCompleted = !_isVisibleCompleted;
-    notifyListeners();
-  }
-
-  void onTaskComplete(int index) {
-    final task = _allTasksList[index];
-    final isDoneChanged = !task.isDone;
-    final completedTask = task.copyWith(isDone: isDoneChanged);
-    _allTasksList[index] = completedTask;
     notifyListeners();
   }
 
@@ -31,13 +27,38 @@ class TaskManager extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateTask(TaskItem task, int index) {
-    _allTasksList[index] = task;
+  void onTaskComplete(TaskItem task) {
+    final taskId = task.id;
+    for (var i = 0; i < _allTasksList.length; i++) {
+      if (_allTasksList[i].id == taskId) {
+        final isDoneChanged = !task.isDone;
+        final completedTask = task.copyWith(isDone: isDoneChanged);
+        _allTasksList[i] = completedTask;
+        break;
+      }
+    }
     notifyListeners();
   }
 
-  bool removeTask(int index) {
-    _allTasksList.removeAt(index);
+  void updateTask(TaskItem task) {
+    final taskId = task.id;
+    for (var i = 0; i < _allTasksList.length; i++) {
+      if (_allTasksList[i].id == taskId) {
+        _allTasksList[i] = task;
+        break;
+      }
+    }
+    notifyListeners();
+  }
+
+  bool removeTask(TaskItem task) {
+    final taskId = task.id;
+    for (var i = 0; i < _allTasksList.length; i++) {
+      if (_allTasksList[i].id == taskId) {
+        _allTasksList.removeAt(i);
+        break;
+      }
+    }
     notifyListeners();
     return true;
   }
