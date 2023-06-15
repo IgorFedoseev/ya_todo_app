@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ya_todo_list/theme/app_elements_color.dart';
+import 'package:ya_todo_list/theme/app_text_styles.dart';
 import '../provider/task_provider.dart';
 import '../provider_widgets/task_item_provider_widget.dart';
-import '../theme/app_colors.dart';
 import 'main_screen_componentes/new_task_tile_widget.dart';
 import 'main_screen_componentes/task_tile_widget.dart';
 
@@ -14,44 +14,79 @@ class MainScreenWidget extends StatelessWidget {
     final manager = TaskProvider.of(context);
     final allTasks = manager?.allTasks ?? [];
     final taskListColor = TodoElementsColor.getBackSecondaryColor(context);
+    final iconColor = TodoElementsColor.getBlueColor(context);
+    final isVisibleCompleted = manager?.isVisibleCompleted ?? true;
+    final visibleIcon =
+        isVisibleCompleted ? Icons.visibility : Icons.visibility_off;
     return Scaffold(
-      appBar: AppBar(
-        scrolledUnderElevation: 5.0,
-        shadowColor: DarkThemeColors.backElevated,
-        title: const Text('Мои дела'),
-      ),
-      body: Padding(
-        padding:
-            const EdgeInsets.only(left: 8.0, right: 8.0, top: 0.0, bottom: 0.0),
-        child: ListView(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                color: taskListColor,
-                border: Border.all(color: taskListColor),
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(12),
-                ),
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ListView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: allTasks.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return TaskTile(
-                        index: index,
-                      );
-                    },
-                  ),
-                  const NewTaskButtonTile(),
-                ],
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            expandedHeight: 164,
+            backgroundColor: TodoElementsColor.getBackPrimaryColor(context),
+            pinned: true,
+            flexibleSpace: FlexibleSpaceBar(
+              title: Text(
+                'Мои дела',
+                style: AppTextStyles.appBarTextStyle,
               ),
             ),
-          ],
-        ),
+            centerTitle: false,
+            actions: [
+              IconButton(
+                onPressed: manager?.onVisible,
+                icon: Icon(
+                  visibleIcon,
+                  color: iconColor,
+                ),
+              ),
+            ],
+            // bottom: PreferredSize(
+            //   child: Padding(
+            //     padding: const EdgeInsets.fromLTRB(60.0, 16.0, 20.0, 16.0),
+            //     child: Row(
+            //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //       children: [
+            //         Expanded(child: Text('Выполненные')),
+            //         Icon(Icons.visibility),
+            //       ],
+            //     ),
+            //   ),
+            //   preferredSize: Size.zero,
+            // ),
+          ),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 40.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: taskListColor,
+                  border: Border.all(color: taskListColor),
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(12),
+                  ),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      padding: EdgeInsets.zero,
+                      shrinkWrap: true,
+                      itemCount: allTasks.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return TaskTile(
+                          index: index,
+                        );
+                      },
+                    ),
+                    const NewTaskButtonTile(),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

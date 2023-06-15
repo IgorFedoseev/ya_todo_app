@@ -3,59 +3,66 @@ import 'app_colors.dart';
 
 abstract class TodoElementsColor {
   static Color getBlueColor(BuildContext context) {
-    final blueColor = Theme.of(context).brightness == Brightness.dark
-        ? DarkThemeColors.colorBlue
-        : LightThemeColors.colorBlue;
-    return blueColor;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final color =
+        isDark ? DarkThemeColors.colorBlue : LightThemeColors.colorBlue;
+    return color;
   }
 
   static Color getRedColor(BuildContext context) {
-    final redColor = Theme.of(context).brightness == Brightness.dark
-        ? DarkThemeColors.colorRed
-        : LightThemeColors.colorRed;
-    return redColor;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final color = isDark ? DarkThemeColors.colorRed : LightThemeColors.colorRed;
+    return color;
   }
 
   static Color getGreenColor(BuildContext context) {
-    final greenColor = Theme.of(context).brightness == Brightness.dark
-        ? DarkThemeColors.colorGreen
-        : LightThemeColors.colorGreen;
-    return greenColor;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final color =
+        isDark ? DarkThemeColors.colorGreen : LightThemeColors.colorGreen;
+    return color;
   }
 
   static Color getWhiteColor(BuildContext context) {
-    final whiteColor = Theme.of(context).brightness == Brightness.dark
-        ? DarkThemeColors.colorWhite
-        : LightThemeColors.colorWhite;
-    return whiteColor;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final color =
+        isDark ? DarkThemeColors.colorWhite : LightThemeColors.colorWhite;
+    return color;
   }
 
   static Color getGreyColor(BuildContext context) {
-    final greyColor = Theme.of(context).brightness == Brightness.dark
-        ? DarkThemeColors.colorGray
-        : LightThemeColors.colorGray;
-    return greyColor;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final color =
+        isDark ? DarkThemeColors.colorGray : LightThemeColors.colorGray;
+    return color;
   }
 
   static Color getTertiaryColor(BuildContext context) {
-    final color = Theme.of(context).brightness == Brightness.dark
-        ? DarkThemeColors.labelTertiary
-        : LightThemeColors.labelTertiary;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final color =
+        isDark ? DarkThemeColors.labelTertiary : LightThemeColors.labelTertiary;
     return color;
   }
 
   static Color getSeparatorColor(BuildContext context) {
-    final color = Theme.of(context).brightness == Brightness.dark
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final color = isDark
         ? DarkThemeColors.supportSeparator
         : LightThemeColors.supportSeparator;
     return color;
   }
 
+  static Color getBackPrimaryColor(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final color =
+        isDark ? DarkThemeColors.backPrimary : LightThemeColors.backPrimary;
+    return color;
+  }
+
   static Color getBackSecondaryColor(BuildContext context) {
-    final redColor = Theme.of(context).brightness == Brightness.dark
-        ? DarkThemeColors.backSecondary
-        : LightThemeColors.backSecondary;
-    return redColor;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final color =
+        isDark ? DarkThemeColors.backSecondary : LightThemeColors.backSecondary;
+    return color;
   }
 
   static ColorScheme getDatePickerScheme(BuildContext context) {
@@ -67,7 +74,8 @@ abstract class TodoElementsColor {
   }
 
   static Color getCustomImpotanceColor(BuildContext context) {
-    final color = Theme.of(context).brightness == Brightness.dark
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final color = isDark
         ? DarkThemeColors.customHighImportance
         : LightThemeColors.customHighImportance;
     return color;
