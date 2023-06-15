@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../model/task_item_manager.dart';
 import '../../provider/task_item_provider.dart';
 import '../../theme/app_elements_color.dart';
 import '../../theme/app_text_styles.dart';
@@ -14,11 +15,13 @@ class DatePickerWidget extends StatefulWidget {
 
 class _DatePickerWidgetState extends State<DatePickerWidget> {
   bool isSwitched = false;
+  late TaskItemManager? manager;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final isDateSelected = TaskItemProvider.of(context)?.taskDate != null;
+    manager = TaskItemProvider.of(context);
+    final isDateSelected = manager?.taskDate != null;
     if (isDateSelected) {
       isSwitched = true;
     }
@@ -41,7 +44,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
           activeColor: activeSwitchColor,
           value: isSwitched,
           onChanged: (isOn) {
-            if (!isOn) TaskItemProvider.getModel(context)?.taskDate = null;
+            if (!isOn) manager?.taskDate = null;
             setState(() {
               isSwitched = isOn;
             });

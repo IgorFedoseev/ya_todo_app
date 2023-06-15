@@ -10,7 +10,7 @@ class NewTaskButtonTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final newButtonStyle = AppElementsTextStyles.newTaskButtonStyle(context);
-    final manager = TaskProvider.of(context);
+    final manager = TaskProvider.getModel(context);
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 18.0,
