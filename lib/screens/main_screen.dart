@@ -18,10 +18,6 @@ class MainScreenWidget extends StatelessWidget {
     final appBarTitleStyle =
         AppTextStyles.appBarTextStyle.copyWith(color: appBatTitleColor);
     final taskListColor = TodoElementsColor.getBackSecondaryColor(context);
-    final iconColor = TodoElementsColor.getBlueColor(context);
-    final isVisibleCompleted = manager?.isVisibleCompleted ?? true;
-    final visibleIcon =
-        isVisibleCompleted ? Icons.visibility : Icons.visibility_off;
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -32,15 +28,6 @@ class MainScreenWidget extends StatelessWidget {
             flexibleSpace: FlexibleSpaceBar(
               title: Text('Мои дела', style: appBarTitleStyle),
             ),
-            actions: [
-              IconButton(
-                onPressed: manager?.onVisible,
-                icon: Icon(
-                  visibleIcon,
-                  color: iconColor,
-                ),
-              ),
-            ],
             // bottom: PreferredSize(
             //   child: Padding(
             //     padding: const EdgeInsets.fromLTRB(60.0, 16.0, 20.0, 16.0),

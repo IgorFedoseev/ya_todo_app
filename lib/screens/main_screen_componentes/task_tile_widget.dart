@@ -75,7 +75,7 @@ class TaskTile extends StatelessWidget {
                 child: Icon(
                   Icons.info_outline,
                   color: TodoElementsColor.getTertiaryColor(context),
-                  size: 27,
+                  size: 26,
                 ),
               ),
             ],
