@@ -10,3 +10,8 @@
 * Форматирование кода присутствует
 * В коде есть разделение вёрстки и логики
 * Установлена иконка для iOS и Android
+
+# Screenshots
+
+<image src = "screenshots/main_screen.png">
+<image src = "screenshots/editor_screen.png">
