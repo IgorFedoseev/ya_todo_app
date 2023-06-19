@@ -1,16 +1,12 @@
-# ya_todo_list
+# Приложение ToDo list
 
-A new Flutter project.
+## Перечень реализованных функций:
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+* Выполнена вёрстка двух экранов по макету
+* Настроена светлая и тёмная тема в соответствии с палитрой
+* Присутствует логика всех возможностей приложения - добавление, редактирование, отметка выполненности, удаление, настройка даты и приоритетности выполнения задачи
+* Настроен показ выполненных дел с логикой
+* Добавлена локализация (DatePicker на русском языке)
+* Форматирование кода присутствует
+* В коде есть разделение вёрстки и логики
+* Установлена иконка для iOS и Android

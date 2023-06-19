@@ -20,8 +20,8 @@ class DeleteButtonWidget extends StatelessWidget {
         style: TextButton.styleFrom(
           foregroundColor: deleteButtonColor,
         ),
-        child: Row(
-          children: const [
+        child: const Row(
+          children: [
             Icon(Icons.delete),
             SizedBox(width: 10),
             Text('Удалить'),
