@@ -1,18 +1,22 @@
 import 'dart:convert';
-import 'package:http/http.dart';
+import 'dart:io';
 
 class ApiClient {
   static const _baseUrl = 'https://beta.mrdekk.ru/todobackend';
-  static const _authHeader = {'Authorization': 'Bearer restorative'};
 
-  Future<Map<String, dynamic>> getList() async {
-    final uri = Uri.parse('$_baseUrl/list');
-    final response = await get(uri, headers: _authHeader);
+  final client = HttpClient();
+
+  Future<Map<String, dynamic>> getData() async {
+    final url = Uri.parse('$_baseUrl/list');
+    final request = await client.getUrl(url);
+    request.headers.add('Authorization', 'Bearer restorative');
+    final response = await request.close();
     if (response.statusCode == 200) {
-      final body = response.body;
+      final jsonStrings = await response.transform(utf8.decoder).toList();
+      final body = jsonStrings.join();
       final json = jsonDecode(body) as Map<String, dynamic>;
       return json;
     }
-    throw ArgumentError("Unknown status code");
+    return {};
   }
 }

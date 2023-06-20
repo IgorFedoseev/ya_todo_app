@@ -4,8 +4,21 @@ import 'package:ya_todo_list/model/task_item.dart';
 import 'domain/api_clients.dart';
 
 class TaskManager extends ChangeNotifier {
+  final apiClient = ApiClient();
   final _allTasksList = <TaskItem>[];
   bool _isVisibleCompleted = true;
+  int _revision = 0;
+
+  void refreshData() async {
+    final jsonData = await apiClient.getData();
+    final tasksJson = jsonData['list'] as List;
+    final tasksList = tasksJson.map((e) => TaskItem.fromJson(e)).toList();
+    for (TaskItem task in tasksList) {
+      _allTasksList.add(task);
+    }
+    _revision = jsonData['revision'];
+    notifyListeners();
+  }
 
   bool get isVisibleCompleted => _isVisibleCompleted;
 

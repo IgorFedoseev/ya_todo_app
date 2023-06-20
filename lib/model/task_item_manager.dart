@@ -61,7 +61,7 @@ class TaskItemManager extends ChangeNotifier {
       id: existingTask?.id ?? const Uuid().v1(),
       title: _taskTitle ?? '_',
       date: _taskDate,
-      importance: _taskImportance,
+      importance: _taskImportance ?? Importance.no,
       isDone: existingTask?.isDone ?? false,
       stringColor: existingTask?.stringColor ?? RandomColor.getColor,
       createdAt: existingTask?.createdAt ?? timeNow,

@@ -2,14 +2,14 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'task_item.g.dart';
 
-enum Importance { low, high }
+enum Importance { no, low, high }
 
 @JsonSerializable()
 class TaskItem {
   final String id;
   @JsonKey(name: "text")
   final String title;
-  final Importance? importance;
+  final Importance importance;
   @JsonKey(name: "deadline")
   final DateTime? date;
   @JsonKey(name: "done")
@@ -26,7 +26,7 @@ class TaskItem {
   TaskItem({
     required this.id,
     required this.title,
-    this.importance,
+    required this.importance,
     this.date,
     this.isDone = false,
     this.stringColor,

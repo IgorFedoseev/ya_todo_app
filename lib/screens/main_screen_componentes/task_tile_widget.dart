@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ya_todo_list/model/task_item.dart';
 
 import '../../provider/task_provider.dart';
 import '../../provider_widgets/task_item_provider_widget.dart';
@@ -65,7 +66,7 @@ class TaskTile extends StatelessWidget {
                 child: CheckBoxIconWidget(task: task),
               ),
               const SizedBox(width: 14),
-              if (!isTaskCompleted && task.importance != null)
+              if (!isTaskCompleted && task.importance != Importance.no)
                 ImportanceMarkWidget(task: task),
               TaskTextWidget(task: task),
               const SizedBox(width: 14),

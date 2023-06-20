@@ -9,7 +9,7 @@ part of 'task_item.dart';
 TaskItem _$TaskItemFromJson(Map<String, dynamic> json) => TaskItem(
       id: json['id'] as String,
       title: json['text'] as String,
-      importance: $enumDecodeNullable(_$ImportanceEnumMap, json['importance']),
+      importance: $enumDecode(_$ImportanceEnumMap, json['importance']),
       date: json['deadline'] == null
           ? null
           : DateTime.fromMillisecondsSinceEpoch(json['deadline'] as int),
@@ -35,4 +35,5 @@ Map<String, dynamic> _$TaskItemToJson(TaskItem instance) => <String, dynamic>{
 const _$ImportanceEnumMap = {
   Importance.low: 'low',
   Importance.high: 'important',
+  Importance.no: 'basic',
 };
