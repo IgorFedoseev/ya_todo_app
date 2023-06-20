@@ -1,14 +1,26 @@
+import 'package:json_annotation/json_annotation.dart';
+
+part 'task_item.g.dart';
+
 enum Importance { low, high }
 
+@JsonSerializable()
 class TaskItem {
   final String id;
+  @JsonKey(name: "text")
   final String title;
   final Importance? importance;
+  @JsonKey(name: "deadline")
   final DateTime? date;
+  @JsonKey(name: "done")
   final bool isDone;
+  @JsonKey(name: "color")
   final String? stringColor;
+  @JsonKey(name: "created_at")
   final int createdAt;
+  @JsonKey(name: "changed_at")
   final int changedAt;
+  @JsonKey(name: "last_updated_by")
   final String lastUpdatedBy;
 
   TaskItem({
@@ -46,4 +58,8 @@ class TaskItem {
       lastUpdatedBy: lastUpdatedBy ?? this.lastUpdatedBy,
     );
   }
+
+  factory TaskItem.fromJson(Map<String, dynamic> json) =>
+      _$TaskItemFromJson(json);
+  Map<String, dynamic> toJson() => _$TaskItemToJson(this);
 }
