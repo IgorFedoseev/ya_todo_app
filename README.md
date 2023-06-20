@@ -11,6 +11,10 @@
 * В коде есть разделение вёрстки и логики
 * Установлена иконка для iOS и Android
 
+# Ссылка на apk:
+
+https://disk.yandex.ru/d/Yafd2bDby041yQ
+
 # Screenshots
 
 <image src = "screenshots/main_screen.png">
