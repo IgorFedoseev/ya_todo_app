@@ -6,6 +6,10 @@ class TaskItem {
   final Importance? importance;
   final DateTime? date;
   final bool isDone;
+  final String? stringColor;
+  final int createdAt;
+  final int changedAt;
+  final String lastUpdatedBy;
 
   TaskItem({
     required this.id,
@@ -13,6 +17,10 @@ class TaskItem {
     this.importance,
     this.date,
     this.isDone = false,
+    this.stringColor,
+    required this.changedAt,
+    required this.createdAt,
+    required this.lastUpdatedBy,
   });
 
   TaskItem copyWith({
@@ -21,6 +29,10 @@ class TaskItem {
     Importance? importance,
     DateTime? date,
     bool? isDone,
+    String? stringColor,
+    int? createdAt,
+    int? changedAt,
+    String? lastUpdatedBy,
   }) {
     return TaskItem(
       id: id ?? this.id,
@@ -28,6 +40,10 @@ class TaskItem {
       importance: importance ?? this.importance,
       date: date ?? this.date,
       isDone: isDone ?? this.isDone,
+      stringColor: stringColor ?? this.stringColor,
+      createdAt: createdAt ?? this.createdAt,
+      changedAt: changedAt ?? this.changedAt,
+      lastUpdatedBy: lastUpdatedBy ?? this.lastUpdatedBy,
     );
   }
 }

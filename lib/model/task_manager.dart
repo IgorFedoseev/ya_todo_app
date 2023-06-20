@@ -42,7 +42,11 @@ class TaskManager extends ChangeNotifier {
     for (var i = 0; i < _allTasksList.length; i++) {
       if (_allTasksList[i].id == taskId) {
         final isDoneChanged = !task.isDone;
-        final completedTask = task.copyWith(isDone: isDoneChanged);
+        final timeNow = DateTime.now().microsecondsSinceEpoch;
+        final completedTask = task.copyWith(
+          isDone: isDoneChanged,
+          changedAt: timeNow,
+        );
         _allTasksList[i] = completedTask;
         break;
       }

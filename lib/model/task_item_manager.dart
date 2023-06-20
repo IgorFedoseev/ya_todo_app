@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
+import '../theme/random_color_creater.dart';
 import 'task_item.dart';
 
 class TaskItemManager extends ChangeNotifier {
@@ -54,13 +55,19 @@ class TaskItemManager extends ChangeNotifier {
     }
   }
 
-  TaskItem createTask() {
+  TaskItem createTask(String deviceId) {
+    final timeNow = DateTime.now().microsecondsSinceEpoch;
     final task = TaskItem(
-        id: existingTask?.id ?? const Uuid().v1(),
-        title: _taskTitle ?? '_',
-        date: _taskDate,
-        importance: _taskImportance,
-        isDone: existingTask?.isDone ?? false);
+      id: existingTask?.id ?? const Uuid().v1(),
+      title: _taskTitle ?? '_',
+      date: _taskDate,
+      importance: _taskImportance,
+      isDone: existingTask?.isDone ?? false,
+      stringColor: existingTask?.stringColor ?? RandomColor.getColor,
+      createdAt: existingTask?.createdAt ?? timeNow,
+      changedAt: timeNow,
+      lastUpdatedBy: deviceId,
+    );
     return task;
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ya_todo_list/settings/device_id.dart';
 import '../model/task_item.dart';
 import '../model/task_item_manager.dart';
 import '../provider/task_item_provider.dart';
@@ -20,9 +21,10 @@ class TaskItemScreenWidget extends StatelessWidget {
     required this.onDelete,
   });
 
-  void onSavePressed(TaskItemManager? manager) {
+  void onSavePressed(TaskItemManager? manager, BuildContext context) async {
     if (manager is TaskItemManager) {
-      final task = manager.createTask();
+      final deviceId = await DeviceId.getDeviceId(context);
+      final task = manager.createTask(deviceId);
       final isTaskUpdated = manager.isUpdateing;
       if (isTaskUpdated) {
         onUpdate(task);
@@ -46,7 +48,8 @@ class TaskItemScreenWidget extends StatelessWidget {
         ),
         actions: [
           TextButton(
-            onPressed: isTextFieldEmpty ? null : () => onSavePressed(manager),
+            onPressed:
+                isTextFieldEmpty ? null : () => onSavePressed(manager, context),
             child: Text(
               'СОХРАНИТЬ',
               style: appBarButtonStyle,
