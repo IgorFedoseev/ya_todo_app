@@ -5,7 +5,7 @@ import 'domain/api_clients.dart';
 
 class TaskManager extends ChangeNotifier {
   final apiClient = ApiClient();
-  final _allTasksList = <TaskItem>[];
+  List _allTasksList = <TaskItem>[];
   bool _isVisibleCompleted = true;
   int _revision = 0;
 
@@ -13,9 +13,7 @@ class TaskManager extends ChangeNotifier {
     final jsonData = await apiClient.getData();
     final tasksJson = jsonData['list'] as List;
     final tasksList = tasksJson.map((e) => TaskItem.fromJson(e)).toList();
-    for (TaskItem task in tasksList) {
-      _allTasksList.add(task);
-    }
+    _allTasksList = tasksList;
     _revision = jsonData['revision'];
     notifyListeners();
   }
@@ -48,8 +46,10 @@ class TaskManager extends ChangeNotifier {
   }
 
   void addTask(TaskItem task) {
-    _allTasksList.add(task);
-    notifyListeners();
+    apiClient.addTask(_revision, task);
+    refreshData();
+    // _allTasksList.add(task);
+    // notifyListeners();
   }
 
   void onTaskComplete(TaskItem task) {
