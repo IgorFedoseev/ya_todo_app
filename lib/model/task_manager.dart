@@ -53,31 +53,43 @@ class TaskManager extends ChangeNotifier {
   }
 
   void onTaskComplete(TaskItem task) {
-    final taskId = task.id;
-    for (var i = 0; i < _allTasksList.length; i++) {
-      if (_allTasksList[i].id == taskId) {
-        final isDoneChanged = !task.isDone;
-        final timeNow = DateTime.now().microsecondsSinceEpoch;
-        final completedTask = task.copyWith(
-          isDone: isDoneChanged,
-          changedAt: timeNow,
-        );
-        _allTasksList[i] = completedTask;
-        break;
-      }
-    }
-    notifyListeners();
+    final timeNow = DateTime.now().microsecondsSinceEpoch;
+    final isDoneChanged = !task.isDone;
+    final changedTask = task.copyWith(
+      isDone: isDoneChanged,
+      changedAt: timeNow,
+    );
+    _apiClient.editTask(_revision, changedTask);
+    refreshData();
+    // final taskId = task.id;
+    // for (var i = 0; i < _allTasksList.length; i++) {
+    //   if (_allTasksList[i].id == taskId) {
+    //     final isDoneChanged = !task.isDone;
+    //     final timeNow = DateTime.now().microsecondsSinceEpoch;
+    //     final completedTask = task.copyWith(
+    //       isDone: isDoneChanged,
+    //       changedAt: timeNow,
+    //     );
+    //     _allTasksList[i] = completedTask;
+    //     break;
+    //   }
+    // }
+    // notifyListeners();
   }
 
   void updateTask(TaskItem task) {
-    final taskId = task.id;
-    for (var i = 0; i < _allTasksList.length; i++) {
-      if (_allTasksList[i].id == taskId) {
-        _allTasksList[i] = task;
-        break;
-      }
-    }
-    notifyListeners();
+    final timeNow = DateTime.now().microsecondsSinceEpoch;
+    final changedTask = task.copyWith(changedAt: timeNow);
+    _apiClient.editTask(_revision, changedTask);
+    refreshData();
+    // final taskId = task.id;
+    // for (var i = 0; i < _allTasksList.length; i++) {
+    //   if (_allTasksList[i].id == taskId) {
+    //     _allTasksList[i] = task;
+    //     break;
+    //   }
+    // }
+    // notifyListeners();
   }
 
   bool removeTask(TaskItem task) {
