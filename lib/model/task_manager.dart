@@ -4,13 +4,13 @@ import 'package:ya_todo_list/model/task_item.dart';
 import 'domain/api_clients.dart';
 
 class TaskManager extends ChangeNotifier {
-  final apiClient = ApiClient();
+  final _apiClient = ApiClient();
   List _allTasksList = <TaskItem>[];
   bool _isVisibleCompleted = true;
   int _revision = 0;
 
   void refreshData() async {
-    final jsonData = await apiClient.getData();
+    final jsonData = await _apiClient.getData();
     final tasksJson = jsonData['list'] as List;
     final tasksList = tasksJson.map((e) => TaskItem.fromJson(e)).toList();
     _allTasksList = tasksList;
@@ -46,7 +46,7 @@ class TaskManager extends ChangeNotifier {
   }
 
   void addTask(TaskItem task) {
-    apiClient.addTask(_revision, task);
+    _apiClient.addTask(_revision, task);
     refreshData();
     // _allTasksList.add(task);
     // notifyListeners();
@@ -82,13 +82,15 @@ class TaskManager extends ChangeNotifier {
 
   bool removeTask(TaskItem task) {
     final taskId = task.id;
-    for (var i = 0; i < _allTasksList.length; i++) {
-      if (_allTasksList[i].id == taskId) {
-        _allTasksList.removeAt(i);
-        break;
-      }
-    }
-    notifyListeners();
+    _apiClient.deleteTask(_revision, taskId);
+    refreshData();
+    // for (var i = 0; i < _allTasksList.length; i++) {
+    //   if (_allTasksList[i].id == taskId) {
+    //     _allTasksList.removeAt(i);
+    //     break;
+    //   }
+    // }
+    // notifyListeners();
     return true;
   }
 }
