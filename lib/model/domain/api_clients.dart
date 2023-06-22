@@ -10,6 +10,7 @@ class ApiClient {
   static const _authHeaderValue = 'Bearer restorative';
   static const _revisionHeaderKey = 'X-Last-Known-Revision';
   static const _elementKey = 'element';
+  static const _utf8HeaderValue = 'application/json; charset=utf-8';
   static const Map<String, dynamic> _addTaskMap = {"status": "ok"};
 
   static Map<String, dynamic> _getBodyMap(TaskItem task) {
@@ -36,12 +37,12 @@ class ApiClient {
   Future<void> addTask(int revision, TaskItem task) async {
     final url = Uri.parse(_baseUrl);
     final request = await client.postUrl(url);
+    request.headers.set(HttpHeaders.contentTypeHeader, _utf8HeaderValue);
     request.headers.add(_authHeaderKey, _authHeaderValue);
     request.headers.add(_revisionHeaderKey, revision);
     final bodyMap = _getBodyMap(task);
     request.write(jsonEncode(bodyMap));
     await request.close();
-    // TODO: add alert window if statuscode != 200
   }
 
   Future<void> deleteTask(int revision, String id) async {
@@ -56,6 +57,7 @@ class ApiClient {
     final taskId = task.id;
     final url = Uri.parse('$_baseUrl/$taskId');
     final request = await client.putUrl(url);
+    request.headers.set(HttpHeaders.contentTypeHeader, _utf8HeaderValue);
     request.headers.add(_authHeaderKey, _authHeaderValue);
     request.headers.add(_revisionHeaderKey, revision);
     final bodyMap = _getBodyMap(task);

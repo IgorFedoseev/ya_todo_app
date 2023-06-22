@@ -14,8 +14,8 @@ class TaskManager extends ChangeNotifier {
     final tasksJson = jsonData['list'] as List;
     final tasksList = tasksJson.map((e) => TaskItem.fromJson(e)).toList();
     _allTasksList = tasksList;
-    _revision = jsonData['revision'];
     notifyListeners();
+    _revision = jsonData['revision'];
   }
 
   bool get isVisibleCompleted => _isVisibleCompleted;
