@@ -5,7 +5,7 @@ import 'package:ya_todo_list/model/task_item.dart';
 
 class ApiClient {
   final client = HttpClient();
-  static const _baseUrl = 'https://beta.mrdekk.ru/todobackend';
+  static const _baseUrl = 'https://beta.mrdekk.ru/todobackend/list';
   static const _authHeaderKey = 'Authorization';
   static const _authHeaderValue = 'Bearer restorative';
   static const _revisionHeaderKey = 'X-Last-Known-Revision';
@@ -20,7 +20,7 @@ class ApiClient {
   }
 
   Future<Map<String, dynamic>> getData() async {
-    final url = Uri.parse('$_baseUrl/list');
+    final url = Uri.parse(_baseUrl);
     final request = await client.getUrl(url);
     request.headers.add(_authHeaderKey, _authHeaderValue);
     final response = await request.close();
@@ -34,7 +34,7 @@ class ApiClient {
   }
 
   Future<void> addTask(int revision, TaskItem task) async {
-    final url = Uri.parse('$_baseUrl/list');
+    final url = Uri.parse(_baseUrl);
     final request = await client.postUrl(url);
     request.headers.add(_authHeaderKey, _authHeaderValue);
     request.headers.add(_revisionHeaderKey, revision);
@@ -45,7 +45,7 @@ class ApiClient {
   }
 
   Future<void> deleteTask(int revision, String id) async {
-    final url = Uri.parse('$_baseUrl/list/$id');
+    final url = Uri.parse('$_baseUrl/$id');
     final request = await client.deleteUrl(url);
     request.headers.add(_authHeaderKey, _authHeaderValue);
     request.headers.add(_revisionHeaderKey, revision);
@@ -54,13 +54,12 @@ class ApiClient {
 
   Future<void> editTask(int revision, TaskItem task) async {
     final taskId = task.id;
-    final url = Uri.parse('$_baseUrl/list/$taskId');
+    final url = Uri.parse('$_baseUrl/$taskId');
     final request = await client.putUrl(url);
     request.headers.add(_authHeaderKey, _authHeaderValue);
     request.headers.add(_revisionHeaderKey, revision);
     final bodyMap = _getBodyMap(task);
     request.write(jsonEncode(bodyMap));
-    final response = await request.close();
-    print(response.statusCode);
+    await request.close();
   }
 }
