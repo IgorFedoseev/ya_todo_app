@@ -20,5 +20,7 @@ https://disk.yandex.ru/d/Yafd2bDby041yQ
 
 # Screenshots
 
-<image src = "https://github.com/IgorFedoseev/ya_todo_app/blob/back_connection/assets/screenshots/main_screen.png" width="350">
-<image src = "https://github.com/IgorFedoseev/ya_todo_app/blob/back_connection/assets/screenshots/editor_screen.png" width="350">
+<div style="display: flex;">
+  <img src="https://github.com/IgorFedoseev/ya_todo_app/blob/back_connection/assets/screenshots/main_screen.png" width="350">
+  <img src="https://github.com/IgorFedoseev/ya_todo_app/blob/back_connection/assets/screenshots/editor_screen.png" width="350">
+</div>
