@@ -1,23 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:ya_todo_list/model/task_item.dart';
 import 'dart:convert';
-
+import '../storage/shared_prefs_storage.dart';
 import 'domain/api_clients.dart';
 
 class TaskManager extends ChangeNotifier {
   final _apiClient = ApiClient();
+  final _dbClient = SharedPrefsStorage();
   List _allTasksList = <TaskItem>[];
   bool _isVisibleCompleted = true;
   int _revision = 0;
+  bool _offlineMode = false;
 
-  void refreshData() async {
-    final jsonData = await _apiClient.getData();
+  Future<void> refreshData() async {
+    late String jsonData;
+    try {
+      jsonData = await _apiClient.getData();
+      _offlineMode = false;
+    } catch (e) {
+      jsonData = await _dbClient.readData();
+      _offlineMode = true;
+    }
     final json = jsonDecode(jsonData) as Map<String, dynamic>;
     final tasksJson = json['list'] as List;
     final tasksList = tasksJson.map((e) => TaskItem.fromJson(e)).toList();
     _allTasksList = tasksList;
     notifyListeners();
-    _revision = json['revision'];
+    _revision = json['revision'] ?? _revision;
+    _dbClient.setData(jsonData);
   }
 
   bool get isVisibleCompleted => _isVisibleCompleted;
@@ -47,22 +57,31 @@ class TaskManager extends ChangeNotifier {
     notifyListeners();
   }
 
-  void addTask(TaskItem task) {
-    _apiClient.addTask(_revision, task);
-    refreshData();
+  Future<void> addTask(TaskItem task) async {
+    try {
+      await _apiClient.addTask(_revision, task);
+      refreshData();
+    } catch (e) {
+      _offlineMode = true;
+    }
     // _allTasksList.add(task);
     // notifyListeners();
   }
 
-  void onTaskComplete(TaskItem task) {
+  Future<void> onTaskComplete(TaskItem task) async {
     final timeNow = DateTime.now().microsecondsSinceEpoch;
     final isDoneChanged = !task.isDone;
     final changedTask = task.copyWith(
       isDone: isDoneChanged,
       changedAt: timeNow,
     );
-    _apiClient.editTask(_revision, changedTask);
-    refreshData();
+    try {
+      await _apiClient.editTask(_revision, changedTask);
+      refreshData();
+    } catch (e) {
+      _offlineMode = true;
+    }
+
     // final taskId = task.id;
     // for (var i = 0; i < _allTasksList.length; i++) {
     //   if (_allTasksList[i].id == taskId) {
@@ -79,11 +98,15 @@ class TaskManager extends ChangeNotifier {
     // notifyListeners();
   }
 
-  void updateTask(TaskItem task) {
+  Future<void> updateTask(TaskItem task) async {
     final timeNow = DateTime.now().microsecondsSinceEpoch;
     final changedTask = task.copyWith(changedAt: timeNow);
-    _apiClient.editTask(_revision, changedTask);
-    refreshData();
+    try {
+      await _apiClient.editTask(_revision, changedTask);
+      refreshData();
+    } catch (e) {
+      _offlineMode = true;
+    }
     // final taskId = task.id;
     // for (var i = 0; i < _allTasksList.length; i++) {
     //   if (_allTasksList[i].id == taskId) {
@@ -94,10 +117,14 @@ class TaskManager extends ChangeNotifier {
     // notifyListeners();
   }
 
-  bool removeTask(TaskItem task) {
+  Future<bool> removeTask(TaskItem task) async {
     final taskId = task.id;
-    _apiClient.deleteTask(_revision, taskId);
-    refreshData();
+    try {
+      await _apiClient.deleteTask(_revision, taskId);
+      refreshData();
+    } catch (e) {
+      _offlineMode = true;
+    }
     // for (var i = 0; i < _allTasksList.length; i++) {
     //   if (_allTasksList[i].id == taskId) {
     //     _allTasksList.removeAt(i);
