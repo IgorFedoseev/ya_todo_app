@@ -6,6 +6,7 @@ import '../provider/task_provider.dart';
 import '../provider_widgets/task_item_provider_widget.dart';
 import 'main_screen_componentes/completed_number_widget.dart';
 import 'main_screen_componentes/new_task_tile_widget.dart';
+import 'main_screen_componentes/offline_mode_widget.dart';
 import 'main_screen_componentes/task_tile_widget.dart';
 
 class MainScreenWidget extends StatefulWidget {
@@ -74,10 +75,13 @@ class MainBodyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final taskListColor = TodoElementsColor.getBackSecondaryColor(context);
-    final allTasks = TaskProvider.of(context)?.allTasks ?? [];
+    final manager = TaskProvider.of(context);
+    final allTasks = manager?.allTasks ?? [];
+    final isOffline = manager?.offlineMode ?? true;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
+        if (isOffline) const OfflineModeInfoWidget(),
         const CompletedNumberWidget(),
         Padding(
           padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 40.0),

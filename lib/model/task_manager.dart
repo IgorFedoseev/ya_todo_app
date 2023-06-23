@@ -12,6 +12,8 @@ class TaskManager extends ChangeNotifier {
   int _revision = 0;
   bool _offlineMode = false;
 
+  get offlineMode => _offlineMode;
+
   Future<void> refreshData() async {
     late String jsonData;
     try {
@@ -63,6 +65,7 @@ class TaskManager extends ChangeNotifier {
       refreshData();
     } catch (e) {
       _offlineMode = true;
+      notifyListeners();
     }
     // _allTasksList.add(task);
     // notifyListeners();
@@ -80,6 +83,7 @@ class TaskManager extends ChangeNotifier {
       refreshData();
     } catch (e) {
       _offlineMode = true;
+      notifyListeners();
     }
 
     // final taskId = task.id;
@@ -106,6 +110,7 @@ class TaskManager extends ChangeNotifier {
       refreshData();
     } catch (e) {
       _offlineMode = true;
+      notifyListeners();
     }
     // final taskId = task.id;
     // for (var i = 0; i < _allTasksList.length; i++) {
@@ -124,6 +129,7 @@ class TaskManager extends ChangeNotifier {
       refreshData();
     } catch (e) {
       _offlineMode = true;
+      notifyListeners();
     }
     // for (var i = 0; i < _allTasksList.length; i++) {
     //   if (_allTasksList[i].id == taskId) {
