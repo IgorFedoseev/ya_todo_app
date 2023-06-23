@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ya_todo_list/model/task_item.dart';
+import 'dart:convert';
 
 import 'domain/api_clients.dart';
 
@@ -11,11 +12,12 @@ class TaskManager extends ChangeNotifier {
 
   void refreshData() async {
     final jsonData = await _apiClient.getData();
-    final tasksJson = jsonData['list'] as List;
+    final json = jsonDecode(jsonData) as Map<String, dynamic>;
+    final tasksJson = json['list'] as List;
     final tasksList = tasksJson.map((e) => TaskItem.fromJson(e)).toList();
     _allTasksList = tasksList;
     notifyListeners();
-    _revision = jsonData['revision'];
+    _revision = json['revision'];
   }
 
   bool get isVisibleCompleted => _isVisibleCompleted;

@@ -15,23 +15,23 @@ class ApiClient {
 
   static Map<String, dynamic> _getBodyMap(TaskItem task) {
     final taskMap = task.toJson();
-    final bodyMap = Map<String, dynamic>.from(_addTaskMap);
+    final bodyMap = Map<String, dynamic>.of(_addTaskMap);
     bodyMap[_elementKey] = taskMap;
     return bodyMap;
   }
 
-  Future<Map<String, dynamic>> getData() async {
+  Future<String> getData() async {
     final url = Uri.parse(_baseUrl);
     final request = await client.getUrl(url);
     request.headers.add(_authHeaderKey, _authHeaderValue);
     final response = await request.close();
     if (response.statusCode == 200) {
       final jsonStrings = await response.transform(utf8.decoder).toList();
-      final body = jsonStrings.join();
-      final json = jsonDecode(body) as Map<String, dynamic>;
-      return json;
+      final jsonString = jsonStrings.join();
+      return jsonString;
     }
-    return {};
+    // TODO: throw error
+    return '';
   }
 
   Future<void> addTask(int revision, TaskItem task) async {

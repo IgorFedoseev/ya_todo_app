@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       localizationsDelegates: TodoLocalization.localizationsDelegates,
       supportedLocales: TodoLocalization.locales,
-      title: 'Flutter Demo',
+      title: 'Todo list',
       darkTheme: darkTheme,
       theme: theme,
       home: const MainScreenProviderWidget(),
