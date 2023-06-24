@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ya_todo_list/theme/app_elements_color.dart';
 import '../../model/task_item.dart';
 import '../../theme/app_text_styles.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TaskTextWidget extends StatelessWidget {
   final TaskItem task;
@@ -22,13 +23,14 @@ class TaskTextWidget extends StatelessWidget {
     final taskTitle = task.title;
     final dateTextStyle =
         AppTextStyles.regylarBodyText.copyWith(color: completedTextColor);
+    final dateMark = AppLocalizations.of(context)?.dateMark ?? '';
     return Expanded(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(taskTitle, style: textStyle),
           if (isDateSetted && !isTaskCompleted)
-            Text('дата', style: dateTextStyle),
+            Text(dateMark, style: dateTextStyle),
         ],
       ),
     );

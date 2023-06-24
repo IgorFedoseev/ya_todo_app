@@ -8,6 +8,7 @@ import 'main_screen_componentes/completed_number_widget.dart';
 import 'main_screen_componentes/new_task_tile_widget.dart';
 import 'main_screen_componentes/offline_mode_widget.dart';
 import 'main_screen_componentes/task_tile_widget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MainScreenWidget extends StatefulWidget {
   const MainScreenWidget({Key? key}) : super(key: key);
@@ -31,6 +32,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
     final appBatTitleColor = TodoElementsColor.getLabelPrimaryColor(context);
     final appBarTitleStyle =
         AppTextStyles.appBarTextStyle.copyWith(color: appBatTitleColor);
+    final appBarTitle = AppLocalizations.of(context)?.appbar_title ?? '';
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -39,7 +41,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
             backgroundColor: TodoElementsColor.getBackPrimaryColor(context),
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
-              title: Text('Мои дела', style: appBarTitleStyle),
+              title: Text(appBarTitle, style: appBarTitleStyle),
             ),
           ),
           const SliverToBoxAdapter(

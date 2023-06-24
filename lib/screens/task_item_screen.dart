@@ -9,6 +9,7 @@ import 'task_screen_components/delete_button_widget.dart';
 import 'task_screen_components/importance_selection_widget.dart';
 import 'task_screen_components/separator_widget.dart';
 import 'task_screen_components/task_field_widget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TaskItemScreenWidget extends StatelessWidget {
   final Function(TaskItem) onCreate;
@@ -40,6 +41,7 @@ class TaskItemScreenWidget extends StatelessWidget {
     final taskTitle = manager?.taskTitle;
     final isTextFieldEmpty = taskTitle?.trim().isEmpty ?? true;
     final appBarButtonStyle = AppElementsTextStyles.textButtonStyle(context);
+    final buttonLabel = AppLocalizations.of(context)?.save_button ?? '';
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -51,7 +53,7 @@ class TaskItemScreenWidget extends StatelessWidget {
             onPressed:
                 isTextFieldEmpty ? null : () => onSavePressed(manager, context),
             child: Text(
-              'СОХРАНИТЬ',
+              buttonLabel,
               style: appBarButtonStyle,
             ),
           ),

@@ -1,0 +1,15 @@
+{
+  "@@locale": "ru",
+  "appbar_title": "Мои дела",
+  "completed": "Выполнено",
+  "dateMark": "дата",
+  "new_task": "Новое",
+  "save_button": "СОХРАНИТЬ",
+  "textfield_hint": "Что надо сделать...",
+  "importance_title": "Важность",
+  "importance_no": "Нет",
+  "importance_low": "Низкий",
+  "importance_high": "Высокий",
+  "deadline": "Сделать до",
+  "delete": "Удалить"
+}

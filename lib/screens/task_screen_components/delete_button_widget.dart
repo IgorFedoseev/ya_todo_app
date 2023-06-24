@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../provider/task_item_provider.dart';
 import '../../theme/app_elements_color.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DeleteButtonWidget extends StatelessWidget {
   final Function onDelete;
@@ -9,6 +10,7 @@ class DeleteButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final deleteText = AppLocalizations.of(context)?.delete ?? '';
     final manager = TaskItemProvider.of(context);
     final taskTitle = manager?.taskTitle;
     final isTextFieldEmpty = taskTitle?.trim().isEmpty ?? true;
@@ -20,11 +22,11 @@ class DeleteButtonWidget extends StatelessWidget {
         style: TextButton.styleFrom(
           foregroundColor: deleteButtonColor,
         ),
-        child: const Row(
+        child: Row(
           children: [
-            Icon(Icons.delete),
-            SizedBox(width: 10),
-            Text('Удалить'),
+            const Icon(Icons.delete),
+            const SizedBox(width: 10),
+            Text(deleteText),
           ],
         ),
       ),

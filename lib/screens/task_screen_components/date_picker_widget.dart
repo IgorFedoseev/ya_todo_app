@@ -5,6 +5,7 @@ import '../../provider/task_item_provider.dart';
 import '../../theme/app_elements_color.dart';
 import '../../theme/app_text_styles.dart';
 import 'date_picker_button_widget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DatePickerWidget extends StatefulWidget {
   const DatePickerWidget({super.key});
@@ -40,6 +41,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final deadlineLabel = AppLocalizations.of(context)?.deadline ?? '';
     final activeSwitchColor = TodoElementsColor.getBlueColor(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -47,7 +49,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Сделать до', style: AppTextStyles.regylarBodyText),
+            Text(deadlineLabel, style: AppTextStyles.regylarBodyText),
             if (isSwitched) const DatePickerButton(),
           ],
         ),

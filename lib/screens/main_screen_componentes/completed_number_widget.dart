@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../provider/task_provider.dart';
 import '../../theme/app_elements_color.dart';
 import '../../theme/app_elements_text_styles.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CompletedNumberWidget extends StatelessWidget {
   const CompletedNumberWidget({super.key});
@@ -15,6 +16,7 @@ class CompletedNumberWidget extends StatelessWidget {
         isVisibleCompleted ? Icons.visibility : Icons.visibility_off;
     final iconColor = TodoElementsColor.getBlueColor(context);
     final newButtonStyle = AppElementsTextStyles.newTaskButtonStyle(context);
+    final counterText = AppLocalizations.of(context)?.completed ?? '';
     return Padding(
       padding: const EdgeInsets.fromLTRB(26.0, 0.0, 14.2, 12.0),
       child: Row(
@@ -24,7 +26,7 @@ class CompletedNumberWidget extends StatelessWidget {
           const SizedBox(width: 15),
           Expanded(
             child: Text(
-              'Выполнено - $completedNumber',
+              '$counterText - $completedNumber',
               style: newButtonStyle,
             ),
           ),

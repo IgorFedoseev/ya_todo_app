@@ -1,0 +1,75 @@
+{
+  "@@locale": "en",
+  "appbar_title": "My tasks",
+  "@appbar_title": {
+    "description": "Title for the appbar",
+    "type": "text",
+    "placeholders": {}
+  },
+  "completed": "Completed",
+  "@completed": {
+    "description": "Completed tasks counter",
+    "type": "text",
+    "placeholders": {}
+  },
+  "dateMark": "date",
+  "@completed": {
+    "description": "Date mark in the task tile on the main screen",
+    "type": "text",
+    "placeholders": {}
+  },
+  "new_task": "New",
+  "@new_task": {
+    "description": "Main screen new task button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "save_button": "SAVE",
+  "@save_button": {
+    "description": "Task item appbar save button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "textfield_hint": "What do you need to do...",
+  "@ctextfield_hint": {
+    "description": "Textfield hint text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "importance_title": "Importance",
+  "@importance_title": {
+    "description": "Importance division title",
+    "type": "text",
+    "placeholders": {}
+  },
+  "importance_no": "No",
+  "@importance_no": {
+    "description": "Impotrance option no",
+    "type": "text",
+    "placeholders": {}
+  },
+  "importance_low": "Low",
+  "@importance_low": {
+    "description": "Impotrance option low",
+    "type": "text",
+    "placeholders": {}
+  },
+  "importance_high": "High",
+  "@importance_high": {
+    "description": "Impotrance option high",
+    "type": "text",
+    "placeholders": {}
+  },
+  "deadline": "Deadline",
+  "@deadline": {
+    "description": "Deadline title",
+    "type": "text",
+    "placeholders": {}
+  },
+  "delete": "Delete",
+  "@deadline": {
+    "description": "Delete button text",
+    "type": "text",
+    "placeholders": {}
+  }
+}

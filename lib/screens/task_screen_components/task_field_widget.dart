@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../provider/task_item_provider.dart';
 import '../../theme/app_elements_color.dart';
 import '../../theme/app_text_styles.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TaskTextField extends StatefulWidget {
   const TaskTextField({super.key});
@@ -32,6 +33,7 @@ class _TaskTextFieldState extends State<TaskTextField> {
 
   @override
   Widget build(BuildContext context) {
+    final hintText = AppLocalizations.of(context)?.textfield_hint ?? '';
     final textFieldColor = TodoElementsColor.getBackSecondaryColor(context);
     final hintStyle = AppTextStyles.regylarBodyText
         .copyWith(color: TodoElementsColor.getTertiaryColor(context));
@@ -51,7 +53,7 @@ class _TaskTextFieldState extends State<TaskTextField> {
           ),
           fillColor: textFieldColor,
           filled: true,
-          hintText: 'Что надо сделать…',
+          hintText: hintText,
           hintStyle: hintStyle,
         ),
         minLines: 3,
