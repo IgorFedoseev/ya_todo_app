@@ -17,7 +17,7 @@
 
 # Ссылка на apk:
 
-https://disk.yandex.ru/d/XORtAMULp9Ng8A
+https://disk.yandex.ru/d/jEgnhw_wd3tidg
 
 # Screenshots
 
