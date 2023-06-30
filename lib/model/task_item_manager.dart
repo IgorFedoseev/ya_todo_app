@@ -8,12 +8,10 @@ class TaskItemManager extends ChangeNotifier {
     _taskTitle = existingTask?.title;
     _taskDate = existingTask?.date;
     _taskImportance = existingTask?.importance;
-    setTaskImportanceText();
   }
   String? _taskTitle;
   DateTime? _taskDate;
   Importance? _taskImportance;
-  String _taskImportanceText = 'Нет';
   final TaskItem? existingTask;
   final bool isUpdateing;
 
@@ -33,27 +31,10 @@ class TaskItemManager extends ChangeNotifier {
 
   set taskImportance(Importance? importance) {
     _taskImportance = importance;
-    setTaskImportanceText();
     notifyListeners();
   }
 
   Importance? get taskImportance => _taskImportance;
-
-  get taskImportanceText => _taskImportanceText;
-
-  void setTaskImportanceText() {
-    final importance = _taskImportance;
-    switch (importance) {
-      case Importance.high:
-        _taskImportanceText = '!! Высокий';
-        break;
-      case Importance.low:
-        _taskImportanceText = 'Низкий';
-        break;
-      default:
-        _taskImportanceText = 'Нет';
-    }
-  }
 
   TaskItem createTask(String deviceId) {
     final timeNow = DateTime.now().microsecondsSinceEpoch;

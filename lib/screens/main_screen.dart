@@ -88,6 +88,7 @@ class MainBodyWidget extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 40.0),
           child: Container(
+            clipBehavior: Clip.hardEdge,
             decoration: BoxDecoration(
               color: taskListColor,
               border: Border.all(color: taskListColor),

@@ -10,14 +10,24 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class ImportanceWidget extends StatelessWidget {
   const ImportanceWidget({super.key});
 
+  String _setTaskImportanceText(BuildContext context, Importance? importance) {
+    switch (importance) {
+      case Importance.high:
+        return AppLocalizations.of(context)?.importance_high ?? '';
+      case Importance.low:
+        return AppLocalizations.of(context)?.importance_low ?? '';
+      default:
+        return AppLocalizations.of(context)?.importance_no ?? '';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final labelText = AppLocalizations.of(context)?.importance_title ?? '';
-    final noText = AppLocalizations.of(context)?.importance_no ?? '';
     final manager = TaskItemProvider.of(context);
+    final importance = manager?.taskImportance;
     final isHighImportance = manager?.taskImportance == Importance.high;
-    final importanceText =
-        TaskItemProvider.of(context)?.taskImportanceText ?? noText;
+    final importanceText = _setTaskImportanceText(context, importance);
     final smallTextStyle = isHighImportance
         ? AppElementsTextStyles.highValueStyle(context)
         : AppElementsTextStyles.lowValueStyle(context);
