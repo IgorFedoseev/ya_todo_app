@@ -1,26 +1,29 @@
+import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'task_item.g.dart';
 
 enum Importance { no, low, high }
 
-@JsonSerializable()
+@HiveType(typeId: 0)
 class TaskItem {
+  @HiveField(0)
   final String id;
-  @JsonKey(name: "text")
+  @HiveField(1)
   final String title;
+  @HiveField(2)
   final Importance importance;
-  @JsonKey(name: "deadline")
+  @HiveField(3)
   final DateTime? date;
-  @JsonKey(name: "done")
+  @HiveField(4)
   final bool isDone;
-  @JsonKey(name: "color")
+  @HiveField(5)
   final String? stringColor;
-  @JsonKey(name: "created_at")
+  @HiveField(6)
   final int createdAt;
-  @JsonKey(name: "changed_at")
+  @HiveField(7)
   final int changedAt;
-  @JsonKey(name: "last_updated_by")
+  @HiveField(8)
   final String lastUpdatedBy;
 
   TaskItem({
