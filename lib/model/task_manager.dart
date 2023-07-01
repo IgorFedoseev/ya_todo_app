@@ -3,21 +3,26 @@ import 'package:ya_todo_list/model/task_item.dart';
 import 'dart:convert';
 import '../storage/db_hive.dart';
 import '../storage/shared_prefs_storage.dart';
-import 'domain/api_clients.dart';
+import '../domain/api_clients.dart';
 
 class TaskManager extends ChangeNotifier {
   // TODO: replace to repository
   final _dbHiveClient = HiveDataBase();
-  // final _apiClient = ApiClient();
+  final _apiClient = ApiClient();
   final _dbClient = SharedPrefsStorage();
+
+  int _backendRevision = 0;
+  int _dataBaseRevision = 0;
+
   List _allTasksList = <TaskItem>[];
   bool _isVisibleCompleted = true;
-  int _backendRevision = 0;
+
   bool _offlineMode = false;
 
   bool get offlineMode => _offlineMode;
 
   List<TaskItem> get allTasks {
+    _allTasksList.sort((a, b) => b.createdAt.compareTo(a.createdAt));
     if (_isVisibleCompleted) {
       return List.unmodifiable(_allTasksList);
     } else {
@@ -45,25 +50,18 @@ class TaskManager extends ChangeNotifier {
   }
 
   Future<void> refreshData() async {
-    // late String jsonData;
-    // try {
-    //   jsonData = await _apiClient.getData();
-    //   _offlineMode = false;
-    // } catch (e) {
-    //   jsonData = await _dbClient.readData();
-    //   _offlineMode = true;
-    // }
-    // final json = jsonDecode(jsonData) as Map<String, dynamic>;
-    // final tasksJson = json['list'] as List;
-    // final tasksList = tasksJson.map((e) => TaskItem.fromJson(e)).toList();
-
-    // TODO: delete tasks from hive
     final tasksHive = await _dbHiveClient.getTasks();
     _allTasksList = tasksHive;
-    print(_allTasksList);
     notifyListeners();
-    // _backendRevision = json['revision'] ?? _backendRevision;
-    // _dbClient.setData(jsonData);
+    try {
+      _backendRevision = await _apiClient.getRevision();
+      _dataBaseRevision = _backendRevision;
+      _offlineMode = false;
+    } catch (e) {
+      _offlineMode = true;
+    }
+
+    print(_allTasksList);
   }
 
   Future<void> addTask(TaskItem task) async {
@@ -93,7 +91,7 @@ class TaskManager extends ChangeNotifier {
     //   _offlineMode = true;
     //   notifyListeners();
     // }
-    await _dbHiveClient.putTask(changedTask);
+    _dbHiveClient.putTask(changedTask);
     refreshData();
   }
 
@@ -107,7 +105,7 @@ class TaskManager extends ChangeNotifier {
     //   _offlineMode = true;
     //   notifyListeners();
     // }
-    await _dbHiveClient.putTask(changedTask);
+    _dbHiveClient.putTask(changedTask);
     refreshData();
   }
 
@@ -120,7 +118,7 @@ class TaskManager extends ChangeNotifier {
     //   _offlineMode = true;
     //   notifyListeners();
     // }
-    await _dbHiveClient.deleteTask(taskId);
+    _dbHiveClient.deleteTask(taskId);
     refreshData();
     return true;
   }

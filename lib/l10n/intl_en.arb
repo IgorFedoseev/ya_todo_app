@@ -13,7 +13,7 @@
     "placeholders": {}
   },
   "dateMark": "date",
-  "@completed": {
+  "@dateMark": {
     "description": "Date mark in the task tile on the main screen",
     "type": "text",
     "placeholders": {}
@@ -67,8 +67,14 @@
     "placeholders": {}
   },
   "delete": "Delete",
-  "@deadline": {
+  "@delete": {
     "description": "Delete button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "offline_mode_text": "No internet",
+  "@offline_mode_text": {
+    "description": "Shows on main screen when internet connection is absent",
     "type": "text",
     "placeholders": {}
   }

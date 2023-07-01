@@ -11,5 +11,6 @@
   "importance_low": "Низкий",
   "importance_high": "Высокий",
   "deadline": "Сделать до",
-  "delete": "Удалить"
+  "delete": "Удалить",
+  "offline_mode_text": "Интернет-соединение прервано"
 }

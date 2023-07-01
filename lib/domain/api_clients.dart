@@ -20,7 +20,7 @@ class ApiClient {
     return bodyMap;
   }
 
-  Future<String> getData() async {
+  Future<int> getRevision() async {
     try {
       final url = Uri.parse(_baseUrl);
       final request = await client.getUrl(url);
@@ -29,7 +29,9 @@ class ApiClient {
       if (response.statusCode == 200) {
         final jsonStrings = await response.transform(utf8.decoder).toList();
         final jsonString = jsonStrings.join();
-        return jsonString;
+        final json = jsonDecode(jsonString) as Map<String, dynamic>;
+        final revision = json['revision'];
+        return revision;
       }
       throw Exception('${response.statusCode}');
     } catch (e) {
