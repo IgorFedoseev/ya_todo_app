@@ -65,4 +65,19 @@ class TaskItem {
   factory TaskItem.fromJson(Map<String, dynamic> json) =>
       _$TaskItemFromJson(json);
   Map<String, dynamic> toJson() => _$TaskItemToJson(this);
+
+  @override
+  String toString() {
+    return 'TaskItem{'
+        'id: $id, '
+        'title: $title, '
+        'importance: $importance, '
+        'date: $date, '
+        'isDone: $isDone, '
+        'stringColor: $stringColor, '
+        'createdAt: $createdAt, '
+        'changedAt: $changedAt, '
+        'lastUpdatedBy: $lastUpdatedBy'
+        '}';
+  }
 }

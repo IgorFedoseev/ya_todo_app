@@ -11,7 +11,18 @@ class HiveDataBase {
       Hive.registerAdapter(ImportanceAdapter());
     }
     final box = await Hive.openBox<TaskItem>('task_box');
-    final num = await box.add(task);
-    print(num);
+    await box.add(task);
+  }
+
+  Future<List<TaskItem>> getTasks() async {
+    if (!Hive.isAdapterRegistered(0)) {
+      Hive.registerAdapter(TaskItemAdapter());
+    }
+    if (!Hive.isAdapterRegistered(1)) {
+      Hive.registerAdapter(ImportanceAdapter());
+    }
+    final box = await Hive.openBox<TaskItem>('task_box');
+    final tasks = box.values.toList();
+    return tasks;
   }
 }

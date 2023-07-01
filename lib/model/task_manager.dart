@@ -6,7 +6,7 @@ import '../storage/shared_prefs_storage.dart';
 import 'domain/api_clients.dart';
 
 class TaskManager extends ChangeNotifier {
-  // replace to repository
+  // TODO: replace to repository
   final _dbHiveClient = HiveDataBase();
 
   final _apiClient = ApiClient();
@@ -34,6 +34,9 @@ class TaskManager extends ChangeNotifier {
     notifyListeners();
     _revision = json['revision'] ?? _revision;
     _dbClient.setData(jsonData);
+    // TODO: delete tasks from hive
+    final tasksHive = await _dbHiveClient.getTasks();
+    print(tasksHive);
   }
 
   bool get isVisibleCompleted => _isVisibleCompleted;
@@ -71,6 +74,7 @@ class TaskManager extends ChangeNotifier {
       _offlineMode = true;
       notifyListeners();
     }
+    // TODO: replace to repository
     _dbHiveClient.addTask(task);
     // _allTasksList.add(task);
     // notifyListeners();
