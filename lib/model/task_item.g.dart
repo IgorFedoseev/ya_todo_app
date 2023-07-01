@@ -64,6 +64,21 @@ class TaskItemAdapter extends TypeAdapter<TaskItem> {
           typeId == other.typeId;
 }
 
+class ImportanceAdapter extends TypeAdapter<Importance> {
+  @override
+  final typeId = 1; // Уникальный идентификатор для адаптера
+
+  @override
+  Importance read(BinaryReader reader) {
+    return Importance.values[reader.readInt()];
+  }
+
+  @override
+  void write(BinaryWriter writer, Importance obj) {
+    writer.writeInt(obj.index);
+  }
+}
+
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************

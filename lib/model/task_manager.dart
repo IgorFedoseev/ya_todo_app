@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:ya_todo_list/model/task_item.dart';
 import 'dart:convert';
+import '../storage/db_hive.dart';
 import '../storage/shared_prefs_storage.dart';
 import 'domain/api_clients.dart';
 
 class TaskManager extends ChangeNotifier {
+  // replace to repository
+  final _dbHiveClient = HiveDataBase();
+
   final _apiClient = ApiClient();
   final _dbClient = SharedPrefsStorage();
   List _allTasksList = <TaskItem>[];
@@ -67,6 +71,7 @@ class TaskManager extends ChangeNotifier {
       _offlineMode = true;
       notifyListeners();
     }
+    _dbHiveClient.addTask(task);
     // _allTasksList.add(task);
     // notifyListeners();
   }
