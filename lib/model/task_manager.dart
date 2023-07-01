@@ -30,13 +30,13 @@ class TaskManager extends ChangeNotifier {
     final json = jsonDecode(jsonData) as Map<String, dynamic>;
     final tasksJson = json['list'] as List;
     final tasksList = tasksJson.map((e) => TaskItem.fromJson(e)).toList();
+    // TODO: delete tasks from hive
+    final tasksHive = await _dbHiveClient.getTasks();
+    // test ends
     _allTasksList = tasksList;
     notifyListeners();
     _revision = json['revision'] ?? _revision;
     _dbClient.setData(jsonData);
-    // TODO: delete tasks from hive
-    final tasksHive = await _dbHiveClient.getTasks();
-    print(tasksHive);
   }
 
   bool get isVisibleCompleted => _isVisibleCompleted;
