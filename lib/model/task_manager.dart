@@ -8,35 +8,23 @@ import 'domain/api_clients.dart';
 class TaskManager extends ChangeNotifier {
   // TODO: replace to repository
   final _dbHiveClient = HiveDataBase();
-
-  final _apiClient = ApiClient();
+  // final _apiClient = ApiClient();
   final _dbClient = SharedPrefsStorage();
   List _allTasksList = <TaskItem>[];
   bool _isVisibleCompleted = true;
-  int _revision = 0;
+  int _backendRevision = 0;
   bool _offlineMode = false;
 
-  get offlineMode => _offlineMode;
+  bool get offlineMode => _offlineMode;
 
-  Future<void> refreshData() async {
-    late String jsonData;
-    try {
-      jsonData = await _apiClient.getData();
-      _offlineMode = false;
-    } catch (e) {
-      jsonData = await _dbClient.readData();
-      _offlineMode = true;
+  List<TaskItem> get allTasks {
+    if (_isVisibleCompleted) {
+      return List.unmodifiable(_allTasksList);
+    } else {
+      final outstandingTasksList =
+          _allTasksList.where((task) => task.isDone == false).toList();
+      return List.unmodifiable(outstandingTasksList);
     }
-    final json = jsonDecode(jsonData) as Map<String, dynamic>;
-    final tasksJson = json['list'] as List;
-    final tasksList = tasksJson.map((e) => TaskItem.fromJson(e)).toList();
-    // TODO: delete tasks from hive
-    final tasksHive = await _dbHiveClient.getTasks();
-    // test ends
-    _allTasksList = tasksList;
-    notifyListeners();
-    _revision = json['revision'] ?? _revision;
-    _dbClient.setData(jsonData);
   }
 
   bool get isVisibleCompleted => _isVisibleCompleted;
@@ -51,33 +39,44 @@ class TaskManager extends ChangeNotifier {
     return counter;
   }
 
-  List<TaskItem> get allTasks {
-    if (_isVisibleCompleted) {
-      return List.unmodifiable(_allTasksList);
-    } else {
-      final outstandingTasksList =
-          _allTasksList.where((task) => task.isDone == false).toList();
-      return List.unmodifiable(outstandingTasksList);
-    }
-  }
-
   void onVisible() {
     _isVisibleCompleted = !_isVisibleCompleted;
     notifyListeners();
   }
 
+  Future<void> refreshData() async {
+    // late String jsonData;
+    // try {
+    //   jsonData = await _apiClient.getData();
+    //   _offlineMode = false;
+    // } catch (e) {
+    //   jsonData = await _dbClient.readData();
+    //   _offlineMode = true;
+    // }
+    // final json = jsonDecode(jsonData) as Map<String, dynamic>;
+    // final tasksJson = json['list'] as List;
+    // final tasksList = tasksJson.map((e) => TaskItem.fromJson(e)).toList();
+
+    // TODO: delete tasks from hive
+    final tasksHive = await _dbHiveClient.getTasks();
+    _allTasksList = tasksHive;
+    print(_allTasksList);
+    notifyListeners();
+    // _backendRevision = json['revision'] ?? _backendRevision;
+    // _dbClient.setData(jsonData);
+  }
+
   Future<void> addTask(TaskItem task) async {
-    try {
-      await _apiClient.addTask(_revision, task);
-      refreshData();
-    } catch (e) {
-      _offlineMode = true;
-      notifyListeners();
-    }
+    // try {
+    //   await _apiClient.addTask(_backendRevision, task);
+    //   refreshData();
+    // } catch (e) {
+    //   _offlineMode = true;
+    //   notifyListeners();
+    // }
     // TODO: replace to repository
-    _dbHiveClient.addTask(task);
-    // _allTasksList.add(task);
-    // notifyListeners();
+    _dbHiveClient.putTask(task);
+    refreshData();
   }
 
   Future<void> onTaskComplete(TaskItem task) async {
@@ -87,66 +86,42 @@ class TaskManager extends ChangeNotifier {
       isDone: isDoneChanged,
       changedAt: timeNow,
     );
-    try {
-      await _apiClient.editTask(_revision, changedTask);
-      refreshData();
-    } catch (e) {
-      _offlineMode = true;
-      notifyListeners();
-    }
-
-    // final taskId = task.id;
-    // for (var i = 0; i < _allTasksList.length; i++) {
-    //   if (_allTasksList[i].id == taskId) {
-    //     final isDoneChanged = !task.isDone;
-    //     final timeNow = DateTime.now().microsecondsSinceEpoch;
-    //     final completedTask = task.copyWith(
-    //       isDone: isDoneChanged,
-    //       changedAt: timeNow,
-    //     );
-    //     _allTasksList[i] = completedTask;
-    //     break;
-    //   }
+    // try {
+    //   await _apiClient.editTask(_backendRevision, changedTask);
+    //   refreshData();
+    // } catch (e) {
+    //   _offlineMode = true;
+    //   notifyListeners();
     // }
-    // notifyListeners();
+    await _dbHiveClient.putTask(changedTask);
+    refreshData();
   }
 
   Future<void> updateTask(TaskItem task) async {
     final timeNow = DateTime.now().microsecondsSinceEpoch;
     final changedTask = task.copyWith(changedAt: timeNow);
-    try {
-      await _apiClient.editTask(_revision, changedTask);
-      refreshData();
-    } catch (e) {
-      _offlineMode = true;
-      notifyListeners();
-    }
-    // final taskId = task.id;
-    // for (var i = 0; i < _allTasksList.length; i++) {
-    //   if (_allTasksList[i].id == taskId) {
-    //     _allTasksList[i] = task;
-    //     break;
-    //   }
+    // try {
+    //   await _apiClient.editTask(_backendRevision, changedTask);
+    //   refreshData();
+    // } catch (e) {
+    //   _offlineMode = true;
+    //   notifyListeners();
     // }
-    // notifyListeners();
+    await _dbHiveClient.putTask(changedTask);
+    refreshData();
   }
 
   Future<bool> removeTask(TaskItem task) async {
     final taskId = task.id;
-    try {
-      await _apiClient.deleteTask(_revision, taskId);
-      refreshData();
-    } catch (e) {
-      _offlineMode = true;
-      notifyListeners();
-    }
-    // for (var i = 0; i < _allTasksList.length; i++) {
-    //   if (_allTasksList[i].id == taskId) {
-    //     _allTasksList.removeAt(i);
-    //     break;
-    //   }
+    // try {
+    //   await _apiClient.deleteTask(_backendRevision, taskId);
+    //   refreshData();
+    // } catch (e) {
+    //   _offlineMode = true;
+    //   notifyListeners();
     // }
-    // notifyListeners();
+    await _dbHiveClient.deleteTask(taskId);
+    refreshData();
     return true;
   }
 }
