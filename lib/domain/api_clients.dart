@@ -99,9 +99,10 @@ class ApiClient {
       request.headers.set(HttpHeaders.contentTypeHeader, _utf8HeaderValue);
       request.headers.add(_authHeaderKey, _authHeaderValue);
       request.headers.add(_revisionHeaderKey, revision);
-      final jsonTasks = tasks.map((task) => task.toJson()).join(',');
+      final jsonTasks = tasks.map((task) => task.toJson()).toList();
       final bodyMap = Map<String, dynamic>.of(_addTaskMap);
-      bodyMap[_listKey] = '[$jsonTasks]';
+      bodyMap[_listKey] = jsonTasks;
+      print(bodyMap);
       request.write(jsonEncode(bodyMap));
       final response = await request.close();
       if (response.statusCode != 200) {

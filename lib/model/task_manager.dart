@@ -49,6 +49,7 @@ class TaskManager extends ChangeNotifier {
   }
 
   Future<void> refreshData() async {
+    // Test without internet and in postman 1moretime
     final tasksHive = await _dbHiveClient.getTasks();
     _allTasksList = tasksHive;
     notifyListeners();
@@ -89,11 +90,11 @@ class TaskManager extends ChangeNotifier {
         }
       } else if (_backendRevision < _dataBaseRevision) {
         try {
-          _apiClient.patchTasks(_backendRevision, tasksHive);
+          await _apiClient.patchTasks(_backendRevision, tasksHive);
           _backendRevision++;
-          _dataBaseRevision = _backendRevision;
+          _dbClient.setRevision(_backendRevision);
         } catch (e) {
-          print('data hasn\'t been saved');
+          print(e);
           _offlineMode = true;
         }
       }
