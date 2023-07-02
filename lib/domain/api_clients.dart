@@ -10,7 +10,9 @@ class ApiClient {
   static const _authHeaderValue = 'Bearer restorative';
   static const _revisionHeaderKey = 'X-Last-Known-Revision';
   static const _elementKey = 'element';
+  static const _listKey = 'list';
   static const _utf8HeaderValue = 'application/json; charset=utf-8';
+  static const _noInternetExceptionText = 'No internet connection';
   static const Map<String, dynamic> _addTaskMap = {"status": "ok"};
 
   static Map<String, dynamic> _getBodyMap(TaskItem task) {
@@ -20,7 +22,7 @@ class ApiClient {
     return bodyMap;
   }
 
-  Future<int> getRevision() async {
+  Future<Map<String, dynamic>> getData() async {
     try {
       final url = Uri.parse(_baseUrl);
       final request = await client.getUrl(url);
@@ -30,12 +32,11 @@ class ApiClient {
         final jsonStrings = await response.transform(utf8.decoder).toList();
         final jsonString = jsonStrings.join();
         final json = jsonDecode(jsonString) as Map<String, dynamic>;
-        final revision = json['revision'];
-        return revision;
+        return json;
       }
       throw Exception('${response.statusCode}');
     } catch (e) {
-      throw Exception('No connection');
+      throw Exception(_noInternetExceptionText);
     }
   }
 
@@ -53,7 +54,7 @@ class ApiClient {
         throw Exception('${response.statusCode}');
       }
     } catch (e) {
-      throw Exception('No connection');
+      throw Exception(_noInternetExceptionText);
     }
   }
 
@@ -68,7 +69,7 @@ class ApiClient {
         throw Exception('${response.statusCode}');
       }
     } catch (e) {
-      throw Exception('No connection');
+      throw Exception(_noInternetExceptionText);
     }
   }
 
@@ -87,7 +88,27 @@ class ApiClient {
         throw Exception('${response.statusCode}');
       }
     } catch (e) {
-      throw Exception('No connection');
+      throw Exception(_noInternetExceptionText);
+    }
+  }
+
+  Future<void> patchTasks(int revision, List<TaskItem> tasks) async {
+    try {
+      final url = Uri.parse(_baseUrl);
+      final request = await client.patchUrl(url);
+      request.headers.set(HttpHeaders.contentTypeHeader, _utf8HeaderValue);
+      request.headers.add(_authHeaderKey, _authHeaderValue);
+      request.headers.add(_revisionHeaderKey, revision);
+      final jsonTasks = tasks.map((task) => task.toJson()).join(',');
+      final bodyMap = Map<String, dynamic>.of(_addTaskMap);
+      bodyMap[_listKey] = '[$jsonTasks]';
+      request.write(jsonEncode(bodyMap));
+      final response = await request.close();
+      if (response.statusCode != 200) {
+        throw Exception('${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception(_noInternetExceptionText);
     }
   }
 }

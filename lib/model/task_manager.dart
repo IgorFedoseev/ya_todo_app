@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ya_todo_list/model/task_item.dart';
-import 'dart:convert';
 import '../storage/db_hive.dart';
 import '../storage/shared_prefs_storage.dart';
 import '../domain/api_clients.dart';
@@ -53,27 +52,67 @@ class TaskManager extends ChangeNotifier {
     final tasksHive = await _dbHiveClient.getTasks();
     _allTasksList = tasksHive;
     notifyListeners();
+    _dataBaseRevision = await _dbClient.getRevision();
+    print(_dataBaseRevision);
     try {
-      _backendRevision = await _apiClient.getRevision();
-      _dataBaseRevision = _backendRevision;
-      _offlineMode = false;
+      final json = await _apiClient.getData();
+      if (_offlineMode) {
+        _offlineMode = false;
+      }
+      final revision = json['revision'] as int;
+      _backendRevision = revision;
+      if (_backendRevision > _dataBaseRevision) {
+        final tasksJson = json['list'] as List;
+        final tasksBackend =
+            tasksJson.map((e) => TaskItem.fromJson(e)).toList();
+        for (var task in tasksBackend) {
+          _dbHiveClient.putTask(task);
+        }
+        _dbClient.setRevision(_backendRevision);
+        if (tasksBackend.length < tasksHive.length) {
+          // TODO:// separated deleting method
+          final backendIdSet = <String>{};
+          final hiveIdSet = <String>{};
+          for (var bTask in tasksBackend) {
+            backendIdSet.add(bTask.id);
+          }
+          for (var hTask in tasksHive) {
+            hiveIdSet.add(hTask.id);
+          }
+          final idSetForDeleting = hiveIdSet.difference(backendIdSet);
+          for (var taskId in idSetForDeleting) {
+            _dbHiveClient.deleteTask(taskId);
+          }
+          final changedList = await _dbHiveClient.getTasks();
+          _allTasksList = changedList;
+          notifyListeners();
+        }
+      } else if (_backendRevision < _dataBaseRevision) {
+        try {
+          _apiClient.patchTasks(_backendRevision, tasksHive);
+          _backendRevision++;
+          _dataBaseRevision = _backendRevision;
+        } catch (e) {
+          print('data hasn\'t been saved');
+          _offlineMode = true;
+        }
+      }
     } catch (e) {
       _offlineMode = true;
     }
-
-    print(_allTasksList);
   }
 
   Future<void> addTask(TaskItem task) async {
-    // try {
-    //   await _apiClient.addTask(_backendRevision, task);
-    //   refreshData();
-    // } catch (e) {
-    //   _offlineMode = true;
-    //   notifyListeners();
-    // }
-    // TODO: replace to repository
     _dbHiveClient.putTask(task);
+    _dbClient.setRevision(_dataBaseRevision + 1);
+    try {
+      await _apiClient.addTask(_backendRevision, task);
+      print('well added');
+    } catch (e) {
+      _offlineMode = true;
+      notifyListeners();
+      print('Hasn\'t been added');
+    }
     refreshData();
   }
 
@@ -84,41 +123,41 @@ class TaskManager extends ChangeNotifier {
       isDone: isDoneChanged,
       changedAt: timeNow,
     );
-    // try {
-    //   await _apiClient.editTask(_backendRevision, changedTask);
-    //   refreshData();
-    // } catch (e) {
-    //   _offlineMode = true;
-    //   notifyListeners();
-    // }
     _dbHiveClient.putTask(changedTask);
+    _dbClient.setRevision(_dataBaseRevision + 1);
+    try {
+      await _apiClient.editTask(_backendRevision, changedTask);
+    } catch (e) {
+      _offlineMode = true;
+      notifyListeners();
+    }
     refreshData();
   }
 
   Future<void> updateTask(TaskItem task) async {
     final timeNow = DateTime.now().microsecondsSinceEpoch;
     final changedTask = task.copyWith(changedAt: timeNow);
-    // try {
-    //   await _apiClient.editTask(_backendRevision, changedTask);
-    //   refreshData();
-    // } catch (e) {
-    //   _offlineMode = true;
-    //   notifyListeners();
-    // }
     _dbHiveClient.putTask(changedTask);
+    _dbClient.setRevision(_dataBaseRevision + 1);
+    try {
+      await _apiClient.editTask(_backendRevision, changedTask);
+    } catch (e) {
+      _offlineMode = true;
+      notifyListeners();
+    }
     refreshData();
   }
 
   Future<bool> removeTask(TaskItem task) async {
     final taskId = task.id;
-    // try {
-    //   await _apiClient.deleteTask(_backendRevision, taskId);
-    //   refreshData();
-    // } catch (e) {
-    //   _offlineMode = true;
-    //   notifyListeners();
-    // }
     _dbHiveClient.deleteTask(taskId);
+    _dbClient.setRevision(_dataBaseRevision + 1);
+    try {
+      await _apiClient.deleteTask(_backendRevision, taskId);
+    } catch (e) {
+      _offlineMode = true;
+      notifyListeners();
+    }
     refreshData();
     return true;
   }

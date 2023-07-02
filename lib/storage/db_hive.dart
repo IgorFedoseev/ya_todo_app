@@ -19,6 +19,7 @@ class HiveDataBase {
   Future<void> deleteTask(String id) async {
     final box = await _registerAdapters<TaskItem>('task_box');
     await box.delete(id);
+    // await box.compact();
     box.close();
   }
 
