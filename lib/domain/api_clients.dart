@@ -102,7 +102,6 @@ class ApiClient {
       final jsonTasks = tasks.map((task) => task.toJson()).toList();
       final bodyMap = Map<String, dynamic>.of(_addTaskMap);
       bodyMap[_listKey] = jsonTasks;
-      print(bodyMap);
       request.write(jsonEncode(bodyMap));
       final response = await request.close();
       if (response.statusCode != 200) {
