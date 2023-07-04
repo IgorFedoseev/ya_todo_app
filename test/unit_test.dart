@@ -81,17 +81,33 @@ void main() {
     });
   });
 
-  test('getRevision() should return the revision successfully', () async {
-    // arrange
-    final mockSharedPrefsStorage = MockSharedPrefsStorage();
-    const expRevision = 1;
-    when(mockSharedPrefsStorage.getRevision())
-        .thenAnswer((_) => Future.value(expRevision));
+  group('SharedPrefsStorage', () {
+    late MockSharedPrefsStorage mockSharedPrefsStorage;
 
-    // act
-    final revision = await mockSharedPrefsStorage.getRevision();
+    test('setRevision() should set the revision successfully', () async {
+      // arrange
+      mockSharedPrefsStorage = MockSharedPrefsStorage();
+      const revision = 10;
 
-    // assert
-    expect(revision, equals(expRevision));
+      // act
+      await mockSharedPrefsStorage.setRevision(revision);
+
+      // assert
+      verify(mockSharedPrefsStorage.setRevision(revision)).called(1);
+    });
+
+    test('getRevision() should return the revision successfully', () async {
+      // arrange
+      mockSharedPrefsStorage = MockSharedPrefsStorage();
+      const expRevision = 1;
+      when(mockSharedPrefsStorage.getRevision())
+          .thenAnswer((_) => Future.value(expRevision));
+
+      // act
+      final revision = await mockSharedPrefsStorage.getRevision();
+
+      // assert
+      expect(revision, equals(expRevision));
+    });
   });
 }
