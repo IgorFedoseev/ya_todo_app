@@ -10,7 +10,10 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
+//TODO: update readme and apk - send the link on homework page!!!
+
 //TODO: update readme and apk
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
