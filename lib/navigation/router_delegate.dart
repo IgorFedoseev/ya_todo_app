@@ -52,4 +52,16 @@ class TodoRouterDelegate extends RouterDelegate<NavigationState>
     state = configuration;
     notifyListeners();
   }
+
+  void _editTask(TaskItem item, Function(TaskItem) onCreate,
+      Function(TaskItem) onUpdate, Function onDelete) {
+    state = NavigationState.editTask(item, onCreate, (p0) => null, onDelete);
+    notifyListeners();
+  }
+
+  void _createTask(Function(TaskItem) onCreate, Function(TaskItem) onUpdate,
+      Function onDelete) {
+    state = NavigationState.newTask(onCreate, onUpdate, onDelete);
+    notifyListeners();
+  }
 }
