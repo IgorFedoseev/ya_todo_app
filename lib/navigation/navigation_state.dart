@@ -4,6 +4,9 @@ class NavigationState {
   final bool? _isUnknown;
   final bool? _isTaskScreen;
   TaskItem? selectedTask;
+  Function(TaskItem)? onCreate;
+  Function(TaskItem)? onUpdate;
+  Function? onDelete;
 
   bool get isNewTaskScreen => _isTaskScreen == true && selectedTask == null;
   bool get isEditTaskScreen => _isTaskScreen == true && selectedTask != null;
@@ -15,12 +18,13 @@ class NavigationState {
         _isTaskScreen = false,
         selectedTask = null;
 
-  NavigationState.newTask()
+  NavigationState.newTask(this.onCreate, this.onUpdate, this.onDelete)
       : _isUnknown = false,
         _isTaskScreen = true,
         selectedTask = null;
 
-  NavigationState.editTask(this.selectedTask)
+  NavigationState.editTask(
+      this.selectedTask, this.onCreate, this.onUpdate, this.onDelete)
       : _isUnknown = false,
         _isTaskScreen = true;
 
