@@ -3,6 +3,7 @@ import 'package:ya_todo_list/model/task_item.dart';
 import '../repository/task_repository.dart';
 
 class TaskManager extends ChangeNotifier {
+  TaskManager({required this.createTask, required this.editTask});
   final _repository = TasksRepository();
   List _allTasksList = <TaskItem>[];
   bool _isVisibleCompleted = true;
@@ -73,4 +74,17 @@ class TaskManager extends ChangeNotifier {
     refreshData();
     return true;
   }
+
+  final void Function({
+    required TaskItem item,
+    required Function(TaskItem) onCreate,
+    required Function(TaskItem) onUpdate,
+    required Function onDelete,
+  }) editTask;
+
+  final void Function({
+    required Function(TaskItem) onCreate,
+    required Function(TaskItem) onUpdate,
+    required Function onDelete,
+  }) createTask;
 }

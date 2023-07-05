@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../provider/task_provider.dart';
-import '../../provider_widgets/task_item_provider_widget.dart';
 import '../../theme/app_elements_text_styles.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -13,6 +12,7 @@ class NewTaskButtonTile extends StatelessWidget {
     final newButtonStyle = AppElementsTextStyles.newTaskButtonStyle(context);
     final manager = TaskProvider.getModel(context);
     final tileText = AppLocalizations.of(context)?.new_task ?? '';
+
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 18.0,
@@ -26,18 +26,13 @@ class NewTaskButtonTile extends StatelessWidget {
           Expanded(
             child: GestureDetector(
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => TaskItemScreenProviderWidget(
-                      onCreate: (item) {
-                        manager?.addTask(item);
-                        Navigator.pop(context);
-                      },
-                      onUpdate: (item) {},
-                      onDelete: () => Navigator.pop(context),
-                    ),
-                  ),
+                return manager?.createTask(
+                  onCreate: (item) {
+                    manager.addTask(item);
+                    Navigator.pop(context);
+                  },
+                  onUpdate: (item) {},
+                  onDelete: () => Navigator.pop(context),
                 );
               },
               child: Text(

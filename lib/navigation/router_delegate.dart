@@ -20,8 +20,11 @@ class TodoRouterDelegate extends RouterDelegate<NavigationState>
     return Navigator(
       key: navigatorKey,
       pages: [
-        const MaterialPage(
-          child: MainScreenProviderWidget(),
+        MaterialPage(
+          child: MainScreenProviderWidget(
+            createTask: _createTask,
+            editTask: _editTask,
+          ),
         ),
         if (state?.isNewTaskScreen == true)
           MaterialPage(
@@ -42,7 +45,12 @@ class TodoRouterDelegate extends RouterDelegate<NavigationState>
           ),
       ],
       onPopPage: (route, result) {
-        return false;
+        if (!route.didPop(result)) {
+          return false;
+        }
+        state = NavigationState.main();
+        notifyListeners();
+        return true;
       },
     );
   }
@@ -53,14 +61,21 @@ class TodoRouterDelegate extends RouterDelegate<NavigationState>
     notifyListeners();
   }
 
-  void _editTask(TaskItem item, Function(TaskItem) onCreate,
-      Function(TaskItem) onUpdate, Function onDelete) {
-    state = NavigationState.editTask(item, onCreate, (p0) => null, onDelete);
+  void _editTask({
+    required TaskItem item,
+    required Function(TaskItem) onCreate,
+    required Function(TaskItem) onUpdate,
+    required Function onDelete,
+  }) {
+    state = NavigationState.editTask(item, onCreate, onUpdate, onDelete);
     notifyListeners();
   }
 
-  void _createTask(Function(TaskItem) onCreate, Function(TaskItem) onUpdate,
-      Function onDelete) {
+  void _createTask({
+    required Function(TaskItem) onCreate,
+    required Function(TaskItem) onUpdate,
+    required Function onDelete,
+  }) {
     state = NavigationState.newTask(onCreate, onUpdate, onDelete);
     notifyListeners();
   }

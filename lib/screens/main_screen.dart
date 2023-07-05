@@ -3,7 +3,6 @@ import 'package:ya_todo_list/theme/app_elements_color.dart';
 import 'package:ya_todo_list/theme/app_text_styles.dart';
 import '../model/task_manager.dart';
 import '../provider/task_provider.dart';
-import '../provider_widgets/task_item_provider_widget.dart';
 import 'main_screen_componentes/completed_number_widget.dart';
 import 'main_screen_componentes/new_task_tile_widget.dart';
 import 'main_screen_componentes/offline_mode_widget.dart';
@@ -51,18 +50,13 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => TaskItemScreenProviderWidget(
-                onCreate: (item) {
-                  manager?.addTask(item);
-                  Navigator.pop(context);
-                },
-                onUpdate: (item) {},
-                onDelete: () => Navigator.pop(context),
-              ),
-            ),
+          return manager?.createTask(
+            onCreate: (item) {
+              manager?.addTask(item);
+              Navigator.pop(context);
+            },
+            onUpdate: (item) {},
+            onDelete: () => Navigator.pop(context),
           );
         },
         child: const Icon(Icons.add),

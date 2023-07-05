@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:ya_todo_list/model/task_item.dart';
 
 import '../../provider/task_provider.dart';
-import '../../provider_widgets/task_item_provider_widget.dart';
 import '../../theme/app_elements_color.dart';
 import 'checkbox_widget.dart';
 import 'completing_background_widget.dart';
@@ -34,22 +33,17 @@ class TaskTile extends StatelessWidget {
       },
       child: InkWell(
         onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => TaskItemScreenProviderWidget(
-                onUpdate: (item) {
-                  manager?.updateTask(item);
-                  Navigator.pop(context);
-                },
-                onCreate: (item) {},
-                onDelete: () {
-                  manager?.removeTask(task);
-                  Navigator.pop(context);
-                },
-                existingTask: task,
-              ),
-            ),
+          return manager?.editTask(
+            item: task,
+            onCreate: (item) {},
+            onUpdate: (item) {
+              manager.updateTask(item);
+              Navigator.pop(context);
+            },
+            onDelete: () {
+              manager.removeTask(task);
+              Navigator.pop(context);
+            },
           );
         },
         child: Padding(
