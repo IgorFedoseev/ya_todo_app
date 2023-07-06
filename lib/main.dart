@@ -10,10 +10,6 @@ Future<void> main() async {
   runApp(MyApp());
 }
 
-//TODO: update readme and apk - send the link on homework page!!!
-
-//TODO: update readme and apk
-
 class MyApp extends StatelessWidget {
   MyApp({super.key});
   final _routerDelegate = TodoRouterDelegate();
