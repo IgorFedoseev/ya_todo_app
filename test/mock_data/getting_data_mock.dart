@@ -4,5 +4,5 @@ import 'package:ya_todo_list/storage/db_hive.dart';
 import 'package:ya_todo_list/storage/shared_prefs_storage.dart';
 
 @GenerateMocks([HiveDataBase, SharedPrefsStorage, ApiClient])
+// ignore: unused_import
 import 'getting_data_mock.mocks.dart';
-// Линтер ругается, но этот импорт обязателен для осуществления генерации

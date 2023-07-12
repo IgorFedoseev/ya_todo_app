@@ -4,6 +4,8 @@ import 'localizations/localizations.dart';
 import 'navigation/router_delegate.dart';
 import 'theme/app_theme.dart';
 
+// TODO: Readme & APK!!!
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();

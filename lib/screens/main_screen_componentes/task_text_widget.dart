@@ -14,7 +14,7 @@ class TaskTextWidget extends StatelessWidget {
     final isDateSetted = task.date != null;
     final completedTextColor = TodoElementsColor.getTertiaryColor(context);
     final textRegularStyle = AppTextStyles.listTextStyle;
-    final textCompletedStyle = AppTextStyles.listTextStyle.copyWith(
+    final textCompletedStyle = textRegularStyle.copyWith(
       color: completedTextColor,
       decoration: TextDecoration.lineThrough,
       decorationColor: completedTextColor,
@@ -28,7 +28,12 @@ class TaskTextWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(taskTitle, style: textStyle),
+          Text(
+            taskTitle,
+            style: textStyle,
+            maxLines: 3,
+            overflow: TextOverflow.ellipsis,
+          ),
           if (isDateSetted && !isTaskCompleted)
             Text(dateMark, style: dateTextStyle),
         ],
