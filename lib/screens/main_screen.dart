@@ -28,25 +28,14 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final appBatTitleColor = TodoElementsColor.getLabelPrimaryColor(context);
-    final appBarTitleStyle =
-        AppTextStyles.appBarTextStyle.copyWith(color: appBatTitleColor);
-    final appBarTitle = AppLocalizations.of(context)?.appbar_title ?? '';
     return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            expandedHeight: 120,
-            backgroundColor: TodoElementsColor.getBackPrimaryColor(context),
-            pinned: true,
-            flexibleSpace: FlexibleSpaceBar(
-              title: Text(appBarTitle, style: appBarTitleStyle),
-            ),
-          ),
-          const SliverToBoxAdapter(
-            child: MainBodyWidget(),
-          ),
-        ],
+      body: OrientationBuilder(
+        builder: (context, Orientation orientation) {
+          final landScape = orientation == Orientation.landscape;
+          return landScape
+              ? const SafeArea(child: _TodoMainBodyWidget())
+              : const _TodoMainBodyWidget();
+        },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -65,8 +54,35 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
   }
 }
 
-class MainBodyWidget extends StatelessWidget {
-  const MainBodyWidget({super.key});
+class _TodoMainBodyWidget extends StatelessWidget {
+  const _TodoMainBodyWidget();
+
+  @override
+  Widget build(BuildContext context) {
+    final appBatTitleColor = TodoElementsColor.getLabelPrimaryColor(context);
+    final appBarTitleStyle =
+        AppTextStyles.appBarTextStyle.copyWith(color: appBatTitleColor);
+    final appBarTitle = AppLocalizations.of(context)?.appbar_title ?? '';
+    return CustomScrollView(
+      slivers: [
+        SliverAppBar(
+          expandedHeight: 120,
+          backgroundColor: TodoElementsColor.getBackPrimaryColor(context),
+          pinned: true,
+          flexibleSpace: FlexibleSpaceBar(
+            title: Text(appBarTitle, style: appBarTitleStyle),
+          ),
+        ),
+        const SliverToBoxAdapter(
+          child: _MainBodyContentWidget(),
+        ),
+      ],
+    );
+  }
+}
+
+class _MainBodyContentWidget extends StatelessWidget {
+  const _MainBodyContentWidget();
 
   @override
   Widget build(BuildContext context) {
