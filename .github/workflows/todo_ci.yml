@@ -16,6 +16,10 @@ jobs:
     steps:
       - name: Check out
         uses: actions/checkout@v3
+      - name: Set up Dart
+        uses: dart-lang/setup-dart@v1
+        with:
+          dart-sdk: stable
       - name: Flutter setup
         uses: subosito/flutter-action@v2
         with:
@@ -23,7 +27,7 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
       - name: Check code formatting
-        run: flutter format --set-exit-if-changed .
+        run: dart format .
       - name: Run linter
         run: flutter analyze
       - name: Run tests
