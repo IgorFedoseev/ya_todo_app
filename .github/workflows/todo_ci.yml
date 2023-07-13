@@ -16,6 +16,11 @@ jobs:
     steps:
       - name: Check out
         uses: actions/checkout@v3
+      - name: Setup Java
+        uses: actions/setup-java@v2 
+        with:
+          distribution: 'zulu'
+          java-version: '11'
       - name: Set up Dart
         uses: dart-lang/setup-dart@v1
         with:
@@ -32,3 +37,5 @@ jobs:
         run: flutter analyze
       - name: Run tests
         run: flutter test
+      - name: Build Apk
+        run: flutter build apk
