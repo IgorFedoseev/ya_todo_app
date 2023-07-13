@@ -9,8 +9,8 @@ on:
       - "master"
 
 jobs:
-  build:
-    name: Test and build
+  build_android:
+    name: Test and build for Android
     runs-on: ubuntu-latest
     
     steps:
@@ -39,3 +39,19 @@ jobs:
         run: flutter test
       - name: Build Apk
         run: flutter build apk
+
+  build-ios:
+    name: Build for iOS
+    runs-on: macos-latest
+      
+    steps:
+      - name: Check out
+        uses: actions/checkout@v3
+      - name: Flutter setup
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+      - name: Install dependencies
+        run: flutter pub get
+      - name: Build iOS
+        run: flutter build ios --no-codesign
