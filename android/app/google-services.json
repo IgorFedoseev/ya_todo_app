@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1055270094313",
+    "project_id": "ya-todo-list",
+    "storage_bucket": "ya-todo-list.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1055270094313:android:cd662454970acafcf43778",
+        "android_client_info": {
+          "package_name": "com.example.ya_todo_list"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1055270094313-7so5480laac58krrkl9blqd0kku8neb5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBd4ZcKTG9Tq0fV-Vin0csxY46qmg0DVY0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1055270094313-7so5480laac58krrkl9blqd0kku8neb5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
