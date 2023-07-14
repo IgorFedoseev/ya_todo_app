@@ -42,8 +42,11 @@ https://disk.yandex.ru/d/mvrrPNc-HA5b1g
 
 <style>
   .image-container {
-    display: flex;
-    justify-content: flex-start;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: start;
+    justify-items: start;
+    gap: 16px;
   }
 </style>
 
