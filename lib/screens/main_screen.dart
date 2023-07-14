@@ -34,7 +34,9 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
       body: OrientationBuilder(
         builder: (context, Orientation orientation) {
           final landScape = orientation == Orientation.landscape;
-          return landScape
+          final screenWidth = MediaQuery.of(context).size.width;
+          final isNeedSafeArea = landScape && screenWidth <= 720;
+          return isNeedSafeArea
               ? const SafeArea(child: _TodoMainBodyWidget())
               : const _TodoMainBodyWidget();
         },
@@ -98,42 +100,49 @@ class _MainBodyContentWidget extends StatelessWidget {
     final manager = TaskProvider.of(context);
     final allTasks = manager?.allTasks ?? [];
     final isOffline = manager?.offlineMode ?? true;
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        if (isOffline) const OfflineModeInfoWidget(),
-        const CompletedNumberWidget(),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 40.0),
-          child: Container(
-            clipBehavior: Clip.hardEdge,
-            decoration: BoxDecoration(
-              color: taskListColor,
-              border: Border.all(color: taskListColor),
-              borderRadius: const BorderRadius.all(
-                Radius.circular(12),
+    final screenWidth = MediaQuery.of(context).size.width;
+    final maxWidth = screenWidth > 720 ? screenWidth * 0.75 : screenWidth;
+    return Center(
+      child: ConstrainedBox(
+        constraints: BoxConstraints(maxWidth: maxWidth),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (isOffline) const OfflineModeInfoWidget(),
+            const CompletedNumberWidget(),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 40.0),
+              child: Container(
+                clipBehavior: Clip.hardEdge,
+                decoration: BoxDecoration(
+                  color: taskListColor,
+                  border: Border.all(color: taskListColor),
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(12),
+                  ),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      padding: EdgeInsets.zero,
+                      shrinkWrap: true,
+                      itemCount: allTasks.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return TaskTile(
+                          index: index,
+                        );
+                      },
+                    ),
+                    const NewTaskButtonTile(),
+                  ],
+                ),
               ),
             ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                ListView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  padding: EdgeInsets.zero,
-                  shrinkWrap: true,
-                  itemCount: allTasks.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return TaskTile(
-                      index: index,
-                    );
-                  },
-                ),
-                const NewTaskButtonTile(),
-              ],
-            ),
-          ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }

@@ -16,7 +16,7 @@ class DeleteButtonWidget extends StatelessWidget {
     final isTextFieldEmpty = taskTitle?.trim().isEmpty ?? true;
     final deleteButtonColor = TodoElementsColor.getRedColor(context);
     return Padding(
-      padding: const EdgeInsets.only(left: 6, right: 200),
+      padding: const EdgeInsets.only(left: 4, right: 200),
       child: TextButton(
         onPressed: isTextFieldEmpty ? null : () => onDelete(),
         style: TextButton.styleFrom(

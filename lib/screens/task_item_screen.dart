@@ -42,6 +42,8 @@ class TaskItemScreenWidget extends StatelessWidget {
     final isTextFieldEmpty = taskTitle?.trim().isEmpty ?? true;
     final appBarButtonStyle = AppElementsTextStyles.textButtonStyle(context);
     final buttonLabel = AppLocalizations.of(context)?.save_button ?? '';
+    final screenWidth = MediaQuery.of(context).size.width;
+    final maxWidth = screenWidth > 720 ? screenWidth * 0.75 : screenWidth;
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -60,27 +62,36 @@ class TaskItemScreenWidget extends StatelessWidget {
         ],
       ),
       body: SafeArea(
-        child: ListView(
-          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-          children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  TaskTextField(),
-                  SizedBox(height: 28),
-                  ImportanceWidget(),
-                  SeparatorWidget(),
-                  SizedBox(height: 20),
-                  DatePickerWidget(),
-                  SizedBox(height: 40),
-                ],
-              ),
+        child: Center(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: maxWidth),
+            child: ListView(
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+              children: [
+                const Padding(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TaskTextField(),
+                      SizedBox(height: 28),
+                      ImportanceWidget(),
+                      SeparatorWidget(),
+                      SizedBox(height: 20),
+                      DatePickerWidget(),
+                      SizedBox(height: 40),
+                    ],
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                  child: SeparatorWidget(),
+                ),
+                DeleteButtonWidget(onDelete: onDelete),
+              ],
             ),
-            const SeparatorWidget(),
-            DeleteButtonWidget(onDelete: onDelete),
-          ],
+          ),
         ),
       ),
     );
