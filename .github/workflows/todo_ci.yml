@@ -38,7 +38,7 @@ jobs:
       - name: Run tests
         run: flutter test
       - name: Build Apk
-        run: flutter build apk --target=lib/flavors/main_prod_flavor.dart
+        run: flutter build apk --target=lib/main_prod_flavor.dart
 
   build-ios:
     name: Build for iOS
@@ -54,4 +54,4 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
       - name: Build iOS
-        run: flutter build ios --no-codesign --target=lib/flavors/main_prod_flavor.dart
+        run: flutter build ios --no-codesign --target=lib/main_prod_flavor.dart
