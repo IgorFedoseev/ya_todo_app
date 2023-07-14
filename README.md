@@ -40,13 +40,20 @@ https://disk.yandex.ru/d/mvrrPNc-HA5b1g
 
 # Screenshots
 
+<style>
+  .image-container {
+    display: flex;
+    justify-content: flex-start;
+  }
+</style>
+
 <div style="display: flex;">
   <img src="https://github.com/IgorFedoseev/ya_todo_app/blob/back_connection/assets/screenshots/main_screen.png" width="198">
   <img src="https://github.com/IgorFedoseev/ya_todo_app/blob/back_connection/assets/screenshots/editor_screen.png" width="198">
   <img src="https://github.com/IgorFedoseev/ya_todo_app/blob/master/assets/screenshots/dark_theme.png" width="200"> 
   <img src="https://github.com/IgorFedoseev/ya_todo_app/blob/master/assets/screenshots/testing_flavor.png" width="200"> 
 </div>
-<div style="display: flex;">
-  <img src="https://github.com/IgorFedoseev/ya_todo_app/blob/master/assets/screenshots/ipad.png" style="align-self: flex-start;" width="390">
-  <img src="https://github.com/IgorFedoseev/ya_todo_app/blob/master/assets/screenshots/landscape_view.png" style="align-self: flex-start;" width="400">
+<div class="image-container">
+  <img src="https://github.com/IgorFedoseev/ya_todo_app/blob/master/assets/screenshots/ipad.png" width="390">
+  <img src="https://github.com/IgorFedoseev/ya_todo_app/blob/master/assets/screenshots/landscape_view.png" width="400">
 </div>
