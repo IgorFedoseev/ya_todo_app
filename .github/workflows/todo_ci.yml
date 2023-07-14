@@ -2,7 +2,6 @@ name: Todo CI
 on:
   push:
     branches:
-      - "master"
       - "back_connection"
   pull_request:
     branches:

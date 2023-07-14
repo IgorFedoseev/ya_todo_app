@@ -40,9 +40,9 @@ https://disk.yandex.ru/d/mvrrPNc-HA5b1g
 # Screenshots
 
 <div style="display: flex;">
-  <img src="https://github.com/IgorFedoseev/ya_todo_app/blob/back_connection/assets/screenshots/main_screen.png" width="202">
+  <img src="https://github.com/IgorFedoseev/ya_todo_app/blob/back_connection/assets/screenshots/main_screen.png" width="198">
   <img src="https://github.com/IgorFedoseev/ya_todo_app/blob/back_connection/assets/screenshots/editor_screen.png" width="200">
-  <img src="https://github.com/IgorFedoseev/ya_todo_app/blob/master/assets/screenshots/dark_theme.png" width="204"> 
+  <img src="https://github.com/IgorFedoseev/ya_todo_app/blob/master/assets/screenshots/dark_theme.png" width="200"> 
   <img src="https://github.com/IgorFedoseev/ya_todo_app/blob/master/assets/screenshots/testing_flavor.png" width="200"> 
 </div>
 <div style="display: flex;">
