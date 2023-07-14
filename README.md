@@ -46,7 +46,11 @@ https://disk.yandex.ru/d/mvrrPNc-HA5b1g
   <img src="https://github.com/IgorFedoseev/ya_todo_app/blob/master/assets/screenshots/dark_theme.png" width="200"> 
   <img src="https://github.com/IgorFedoseev/ya_todo_app/blob/master/assets/screenshots/testing_flavor.png" width="200"> 
 </div>
-<div style="display: flex; align-items: flex-start;">
-  <img src="https://github.com/IgorFedoseev/ya_todo_app/blob/master/assets/screenshots/ipad.png" width="390">
-  <img src="https://github.com/IgorFedoseev/ya_todo_app/blob/master/assets/screenshots/landscape_view.png" width="400">
+<div style="display: flex;">
+  <div style="display: flex; align-items: flex-start;">
+    <img src="https://github.com/IgorFedoseev/ya_todo_app/blob/master/assets/screenshots/ipad.png" width="390">
+  </div>
+  <div style="display: flex; align-items: flex-start;">
+    <img src="https://github.com/IgorFedoseev/ya_todo_app/blob/master/assets/screenshots/landscape_view.png" width="400">
+  </div>
 </div>
