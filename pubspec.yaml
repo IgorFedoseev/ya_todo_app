@@ -44,6 +44,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   firebase_core: ^2.15.0
   firebase_crashlytics: ^3.3.4
+  firebase_analytics: ^10.4.4
   get_it: ^7.6.0
 
 dev_dependencies:
