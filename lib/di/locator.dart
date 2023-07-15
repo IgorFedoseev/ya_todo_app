@@ -9,7 +9,7 @@ import '../firebase_options.dart';
 
 GetIt locator = GetIt.instance;
 
-void setupLocator() async {
+Future<void> setupLocator() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   await Firebase.initializeApp(
