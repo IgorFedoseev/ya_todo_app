@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ya_todo_list/model/task_item.dart';
+import '../di/locator.dart';
 import '../repository/task_repository.dart';
 
 class TaskManager extends ChangeNotifier {
@@ -47,6 +48,7 @@ class TaskManager extends ChangeNotifier {
 
   Future<void> addTask(TaskItem task) async {
     await _repository.addTask(task);
+    _trackEvent('task_has_been_created');
     refreshData();
   }
 
@@ -58,6 +60,8 @@ class TaskManager extends ChangeNotifier {
       changedAt: timeNow,
     );
     await _repository.completeTask(changedTask);
+    final status = isDoneChanged ? 'done' : 'undone';
+    _trackEvent('task_is_$status');
     refreshData();
   }
 
@@ -65,6 +69,7 @@ class TaskManager extends ChangeNotifier {
     final timeNow = DateTime.now().microsecondsSinceEpoch;
     final changedTask = task.copyWith(changedAt: timeNow);
     await _repository.updateTask(changedTask);
+    _trackEvent('task_has_been_updated');
     refreshData();
   }
 
@@ -72,6 +77,7 @@ class TaskManager extends ChangeNotifier {
     final taskId = task.id;
     await _repository.deleteTask(taskId);
     refreshData();
+    _trackEvent('task_has_been_removed');
     return true;
   }
 
@@ -87,4 +93,8 @@ class TaskManager extends ChangeNotifier {
     required Function(TaskItem) onUpdate,
     required Function onDelete,
   }) createTask;
+
+  void _trackEvent(String eventName) {
+    Locator.analytics.logEvent(name: eventName);
+  }
 }

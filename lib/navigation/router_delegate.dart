@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ya_todo_list/navigation/navigation_state.dart';
 
+import '../di/locator.dart';
 import '../model/task_item.dart';
 import '../provider_widgets/main_screen_provider_widget.dart';
 import '../provider_widgets/task_item_provider_widget.dart';
@@ -50,6 +51,7 @@ class TodoRouterDelegate extends RouterDelegate<NavigationState>
         }
         state = NavigationState.main();
         notifyListeners();
+        _trackEvent('go_to_main_page');
         return true;
       },
     );
@@ -69,6 +71,7 @@ class TodoRouterDelegate extends RouterDelegate<NavigationState>
   }) {
     state = NavigationState.editTask(item, onCreate, onUpdate, onDelete);
     notifyListeners();
+    _trackEvent('go_to_edit_task_page');
   }
 
   void _createTask({
@@ -78,5 +81,10 @@ class TodoRouterDelegate extends RouterDelegate<NavigationState>
   }) {
     state = NavigationState.newTask(onCreate, onUpdate, onDelete);
     notifyListeners();
+    _trackEvent('go_to_create_task_page');
+  }
+
+  void _trackEvent(String eventName) {
+    Locator.analytics.logEvent(name: eventName);
   }
 }
