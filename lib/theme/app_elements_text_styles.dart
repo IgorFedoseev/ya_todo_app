@@ -29,11 +29,14 @@ abstract class AppElementsTextStyles {
     return style;
   }
 
-  static TextStyle highValueStyle(BuildContext context) {
+  static TextStyle highValueStyle(
+      BuildContext context, bool isFbConfigEnabled) {
     final textColor = Theme.of(context).brightness == Brightness.dark
         ? DarkThemeColors.colorRed
         : LightThemeColors.colorRed;
-    final style = AppTextStyles.smallBodyText.copyWith(color: textColor);
+    final resultColor =
+        isFbConfigEnabled ? FirebaseColors.importanceColor : textColor;
+    final style = AppTextStyles.smallBodyText.copyWith(color: resultColor);
     return style;
   }
 }

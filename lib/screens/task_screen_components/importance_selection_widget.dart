@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../di/locator.dart';
 import '../../model/task_item.dart';
 import '../../provider/task_item_provider.dart';
 import '../../theme/app_elements_text_styles.dart';
@@ -28,8 +29,9 @@ class ImportanceWidget extends StatelessWidget {
     final importance = manager?.taskImportance;
     final isHighImportance = manager?.taskImportance == Importance.high;
     final importanceText = _setTaskImportanceText(context, importance);
+    final isConfigRemoteEnabled = Locator.remoteConfig.isColorChanged;
     final smallTextStyle = isHighImportance
-        ? AppElementsTextStyles.highValueStyle(context)
+        ? AppElementsTextStyles.highValueStyle(context, isConfigRemoteEnabled)
         : AppElementsTextStyles.lowValueStyle(context);
     return GestureDetector(
       onTap: () => showDialog(

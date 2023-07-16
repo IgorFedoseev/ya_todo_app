@@ -37,3 +37,7 @@ abstract class DarkThemeColors {
   static const backElevated = Color(0xFF3C3C3F);
   static const customHighImportance = Color.fromRGBO(68, 43, 43, 1.0);
 }
+
+abstract class FirebaseColors {
+  static const importanceColor = Color(0xFF793cd8);
+}

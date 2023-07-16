@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import '../../di/locator.dart';
 import '../../model/task_item.dart';
+import '../../theme/app_colors.dart';
 import '../../theme/app_elements_color.dart';
 
 class CheckBoxIconWidget extends StatelessWidget {
@@ -10,17 +12,24 @@ class CheckBoxIconWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final taskCompletedState = task.isDone;
     final isUrgent = task.importance == Importance.high;
+    final isConfigRemoteEnabled = Locator.remoteConfig.isColorChanged;
     if (taskCompletedState) {
       return Icon(
         Icons.check_box,
         color: TodoElementsColor.getGreenColor(context),
         size: 27.0,
       );
-    } else if (isUrgent) {
+    } else if (isUrgent && !isConfigRemoteEnabled) {
       return SizedBox(
         width: 18,
         height: 18,
         child: CustomPaint(painter: MyPainter(context)),
+      );
+    } else if (isUrgent && isConfigRemoteEnabled) {
+      return const Icon(
+        Icons.square_outlined,
+        color: FirebaseColors.importanceColor,
+        size: 27.0,
       );
     }
     return Icon(
