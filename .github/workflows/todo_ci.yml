@@ -37,6 +37,10 @@ jobs:
         run: flutter test
       - name: Build Apk
         run: flutter build apk --target=lib/main_prod_flavor.dart
+      - uses: actions/upload-artifact@v1
+        with:
+          name: release-apk 
+          path: build/app/outputs/flutter-apk/app-release.apk
       - name: Deploy to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
