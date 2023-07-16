@@ -37,6 +37,15 @@ jobs:
         run: flutter test
       - name: Build Apk
         run: flutter build apk --target=lib/main_prod_flavor.dart
+      - name: Deploy to Firebase App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+          appId: ${{ secrets.APPID }}
+          token: ${{ secrets.TOKEN }}
+          groups: pre-testers
+          file: build/app/outputs/flutter-apk/app-release.apk
+
+
 
   build-ios:
     name: Build for iOS
